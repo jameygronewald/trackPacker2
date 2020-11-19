@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RegisterCredentials } from './interfaces';
+import {authRequests} from '../../utils/API/authRequests';
+
 import {
   Container,
   TextField,
@@ -48,9 +50,11 @@ const Register = (props: Props) => {
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log(registerFormData);
+    const response = await authRequests.register(registerFormData);
+    console.log(response);
   };
 
   return (
