@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LoginCredentials } from './interfaces';
+import { userRequests } from '../../utils/API/userRequests';
 import {
   Container,
   TextField,
@@ -41,9 +42,14 @@ const LandingPage = (props: Props) => {
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(credentials);
+    try {
+      const response = await userRequests.loginUser(credentials);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
