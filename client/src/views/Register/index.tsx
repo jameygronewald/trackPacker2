@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RegisterCredentials } from './interfaces';
-import {authRequests} from '../../utils/API/authRequests';
+import { userRequests } from '../../utils/API/userRequests';
 
 import {
   Container,
@@ -52,9 +52,8 @@ const Register = (props: Props) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(registerFormData);
-    const response = await authRequests.register(registerFormData);
-    console.log(response);
+    const response = await userRequests.register(registerFormData);
+    console.log(response.data);
   };
 
   return (

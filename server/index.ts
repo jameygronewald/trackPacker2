@@ -1,19 +1,23 @@
 import * as express from 'express';
 import * as path from 'path';
-import * as mongoose from 'mongoose';
 import * as cors from 'cors';
+import connectDB from './config/db';
 
 const app = express();
 
-const PORT = process.env.PORT || 3001;
+// Database connection from config directory
+connectDB();
 
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
 // Route imports
 app.use('/api/auth', require('../controllers/authController'));
+app.use('/api/user', require('../controllers/userController'));
 
+// Check for production environment and serve static client build
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 
@@ -22,19 +26,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://localhost/trackPacker2', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(() => {
-    console.log('Successfully connected to database.');
-  })
-  .catch(err => {
-    console.log('Unable to connect to database.');
-    console.log(err);
-  });
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Express server is running on http://localhost:${PORT}`);
