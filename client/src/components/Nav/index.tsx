@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 const Nav = () => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} navbar`}>
       <Toolbar color='transparent' variant='dense'>
         <img
           src={logo}

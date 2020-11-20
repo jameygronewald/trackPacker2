@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { handleLogout } from './functions';
 import { makeStyles, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -18,14 +19,6 @@ const useStyles = makeStyles(theme => ({
 
 const LogoutButton = () => {
   const classes = useStyles();
-
-  //   const { setUserData } = useContext(UserContext);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    console.log('logout hit');
-    // setUserData({ isAuthenticated: false });
-  };
 
   return (
     <div className={classes.root}>
