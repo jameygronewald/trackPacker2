@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
     };
 
     const token = createToken(payload);
-    res.json({ token });
+    return res.json({ token });
     
   } catch (error) {
     console.error(error.message);

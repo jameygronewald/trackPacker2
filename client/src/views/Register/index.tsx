@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { RegisterCredentials } from './interfaces';
 import { userRequests } from '../../utils/API/userRequests';
+import { UserContext } from '../../context/UserContext';
 import {
   Container,
   TextField,
@@ -42,6 +43,10 @@ const Register = (props: Props) => {
 
   const { email, password, firstName, lastName } = registerFormData;
 
+  const { setUserState, userState, user, isAuthenticated } = useContext(
+    UserContext
+  );
+
   const handleChange = (e: any) => {
     setRegisterFormData({
       ...registerFormData,
@@ -52,8 +57,16 @@ const Register = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const response = await userRequests.register(registerFormData);
-    console.log(response.data);
+    const { token } = response.data;
+    localStorage.setItem('token', token);
+    const userResponse = await userRequests.getUser();
+    console.log(userResponse);
+    setUserState({ ...userState, user: userResponse, isAuthenticated: true, token });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to='/inventory' />;
+  }
 
   return (
     <div>

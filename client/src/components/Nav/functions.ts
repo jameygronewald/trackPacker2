@@ -1,4 +1,4 @@
-export const handleLogout = (): void => {
+export const handleLogout = () => {
     localStorage.clear();
     console.log('logout hit');
     // setUserData({ isAuthenticated: false });
