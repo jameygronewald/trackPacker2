@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RegisterCredentials } from './interfaces';
 import { userRequests } from '../../utils/API/userRequests';
-
 import {
   Container,
   TextField,
