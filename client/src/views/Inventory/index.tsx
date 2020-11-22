@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Dashboard from '../../components/Dashboard';
 import {
   makeStyles,
@@ -26,10 +26,10 @@ const Inventory = (props: Props) => {
 
   const classes = useStyles();
 
-  const [newItem, setNewItem] = useState({
-    name: '',
-    status: 'Inventory',
-  });
+  // const [newItem, setNewItem] = useState({
+  //   name: '',
+  //   status: 'Inventory',
+  // });
 
   //   let textInput = useRef(null);
 
