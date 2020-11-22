@@ -7,8 +7,7 @@ import db from '../models';
 router.get('/', checkToken, async (req: any, res) => {
   try {
     const userId = req.user.id;
-    const user = await db.User.findOne({ _id: userId });
-    console.log(user);
+    const user = await db.User.findById(userId).select('-password');
     res.status(200).json({ user });
   } catch (error) {
     console.error(error.message);

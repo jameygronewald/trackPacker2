@@ -36,7 +36,7 @@ const LandingPage = (props: Props) => {
     password: '',
   });
 
-  const { isAuthenticated, user, userState, setUserState } = useContext(UserContext);
+  const { isAuthenticated, userState, setUserState } = useContext(UserContext);
 
   const handleChange = (e: any) => {
     setCredentials({
@@ -52,7 +52,7 @@ const LandingPage = (props: Props) => {
       const { token } = response.data;
       localStorage.setItem('token', token);
       const userResponse = await userRequests.getUser();
-      console.log(userResponse);
+      const { user } = userResponse.data;
       setUserState({ ...userState, user, isAuthenticated: true, token });
     } catch (error) {
       console.error(error);

@@ -5,7 +5,7 @@ import LandingPage from './views/LandingPage';
 import Register from './views/Register';
 import Inventory from './views/Inventory';
 import { UserContext } from './context/UserContext';
-import setAuthToken from './utils/setAuthToken';
+import setAuthToken from './utils/setAuthTokenToHeaders';
 import { userRequests } from './utils/API/userRequests';
 
 import './App.css';
@@ -35,7 +35,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    loadUser();
+    const token = localStorage.getItem("sessionToken");
+    if (token) {
+      loadUser()
+    }
   }, []);
 
 

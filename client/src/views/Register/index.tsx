@@ -43,7 +43,7 @@ const Register = (props: Props) => {
 
   const { email, password, firstName, lastName } = registerFormData;
 
-  const { setUserState, userState, user, isAuthenticated } = useContext(
+  const { setUserState, userState, isAuthenticated } = useContext(
     UserContext
   );
 
