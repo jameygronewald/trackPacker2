@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LoginCredentials } from './interfaces';
 import { userRequests } from '../../utils/API/userRequests';
+import { UserContext } from '../../context/UserContext';
 import {
   Container,
   TextField,
@@ -35,6 +36,8 @@ const LandingPage = (props: Props) => {
     password: '',
   });
 
+  const { userState, setUserState } = useContext(UserContext);
+
   const handleChange = (e: any) => {
     setCredentials({
       ...credentials,
@@ -46,7 +49,9 @@ const LandingPage = (props: Props) => {
     e.preventDefault();
     try {
       const response = await userRequests.loginUser(credentials);
-      console.log(response.data);
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      setUserState({ ...userState, isAuthenticated: true, token });
     } catch (error) {
       console.error(error);
     }
