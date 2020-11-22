@@ -20,6 +20,8 @@ const useStyles = makeStyles(theme => ({
 const LogoutButton = () => {
   const classes = useStyles();
 
+  
+
   return (
     <div className={classes.root}>
       <div>

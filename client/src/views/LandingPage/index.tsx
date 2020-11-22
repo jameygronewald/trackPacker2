@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { LoginCredentials } from './interfaces';
 import { userRequests } from '../../utils/API/userRequests';
 import { UserContext } from '../../context/UserContext';
@@ -36,7 +36,7 @@ const LandingPage = (props: Props) => {
     password: '',
   });
 
-  const { userState, setUserState } = useContext(UserContext);
+  const { isAuthenticated, user, userState, setUserState } = useContext(UserContext);
 
   const handleChange = (e: any) => {
     setCredentials({
@@ -51,11 +51,17 @@ const LandingPage = (props: Props) => {
       const response = await userRequests.loginUser(credentials);
       const { token } = response.data;
       localStorage.setItem('token', token);
-      setUserState({ ...userState, isAuthenticated: true, token });
+      const userResponse = await userRequests.getUser();
+      console.log(userResponse);
+      setUserState({ ...userState, user, isAuthenticated: true, token });
     } catch (error) {
       console.error(error);
     }
   };
+
+  if (isAuthenticated) {
+    return <Redirect to='/inventory' />;
+  }
 
   return (
     <div>

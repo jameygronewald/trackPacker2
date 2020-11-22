@@ -1,30 +1,35 @@
-import React from "react";
+import React, { useContext } from 'react';
 // import ProfileLink from "../ProfileLink/ProfileLink";
-// import { UserContext } from "../../utils/UserContext";
-import { makeStyles, Box, Typography, Divider } from "@material-ui/core";
+import { UserContext } from '../../context/UserContext';
+import { makeStyles, Box, Typography, Divider } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
-    fontFamily: 'Montserrat'
-  }
+    fontFamily: 'Montserrat',
+  },
 }));
 
 const User = () => {
-//   const { userData } = useContext(UserContext);
   const classes = useStyles();
+
+  const { user } = useContext(UserContext);
+
   return (
     <>
       <Box
-        alignItems="center"
-        justifyContent="center"
-        display="flex"
+        alignItems='center'
+        justifyContent='center'
+        display='flex'
         p={2.3}
-        mx="auto"
+        mx='auto'
       >
-      <Typography className={classes.title} variant="h5">{`firstName lastName`}</Typography>
+        <Typography
+          className={classes.title}
+          variant='h5'
+        >{user && `${user.firstName} ${user.lastName}`}</Typography>
       </Box>
-      <Divider variant="middle" />
+      <Divider variant='middle' />
       {/* <ProfileLink link="Inventory" />
       <ProfileLink link="Excursions" /> */}
     </>

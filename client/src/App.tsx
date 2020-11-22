@@ -20,6 +20,8 @@ const App = () => {
     isAuthenticated: false,
     token: null,
   });
+  
+  const { user, isAuthenticated, token } = userState;
 
   const loadUser = async () => {
     const response = await userRequests.getUser();
@@ -36,7 +38,6 @@ const App = () => {
     loadUser();
   }, []);
 
-  const { user, isAuthenticated, token } = userState;
 
   return (
     <>
