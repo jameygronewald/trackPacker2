@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { RegisterCredentials } from './interfaces';
 import { userRequests } from '../../utils/API/userRequests';
 import { UserContext } from '../../context/UserContext';
+import setAuthToken from "../../utils/setAuthTokenToHeaders";
 import {
   Container,
   TextField,
@@ -59,8 +60,9 @@ const Register = (props: Props) => {
     const response = await userRequests.register(registerFormData);
     const { token } = response.data;
     localStorage.setItem('token', token);
+    setAuthToken(token)
     const userResponse = await userRequests.getUser();
-    console.log(userResponse);
+    console.log(userResponse.data);
     setUserState({ ...userState, user: userResponse, isAuthenticated: true, token });
   };
 

@@ -1,7 +1,7 @@
 import * as express from 'express';
 const router = express.Router();
 import db from '../models';
-import createToken from '../middleware/createToken';
+import createToken from '../utils/createToken';
 
 router.post('/register', async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
