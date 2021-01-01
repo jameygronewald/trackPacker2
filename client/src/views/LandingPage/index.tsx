@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { LoginCredentials } from './interfaces';
 import { userRequests } from '../../utils/API/userRequests';
 import { UserContext } from '../../context/UserContext';
+import setAuthToken from "../../utils/setAuthTokenToHeaders";
 import {
   Container,
   TextField,
@@ -51,6 +52,7 @@ const LandingPage = (props: Props) => {
       const response = await userRequests.loginUser(credentials);
       const { token } = response.data;
       localStorage.setItem('token', token);
+      setAuthToken(token)
       const userResponse = await userRequests.getUser();
       const { user } = userResponse.data;
       setUserState({ ...userState, user, isAuthenticated: true, token });

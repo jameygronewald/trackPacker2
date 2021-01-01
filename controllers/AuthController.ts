@@ -1,27 +1,28 @@
-import * as express from 'express';
-import checkToken from '../middleware/checkToken';
+import * as express from "express";
+import checkToken from "../middleware/checkToken";
 const router = express.Router();
-import createToken from '../middleware/createToken';
-import db from '../models';
+import createToken from "../utils/createToken";
+import db from "../models";
 
-router.get('/', checkToken, async (req: any, res) => {
+router.get("/", checkToken, async (req: any, res) => {
   try {
     const userId = req.user.id;
-    const user = await db.User.findById(userId).select('-password');
+    const user = await db.User.findById(userId).select("-password");
+
     res.status(200).json({ user });
   } catch (error) {
     console.error(error.message);
-    res.status(401).json({ msg: 'Invalid jwt.' });
+    res.status(401).json({ msg: "Invalid jwt." });
   }
 });
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await db.User.findOne({ email });
 
-    if (password !== user.password) throw new Error('Invalid Password.');
+    if (password !== user.password) throw new Error("Invalid Password.");
 
     const payload = {
       user: {
@@ -31,10 +32,9 @@ router.post('/', async (req, res) => {
 
     const token = createToken(payload);
     res.json({ token });
-
   } catch (error) {
     console.error(error.message);
-    res.status(401).json({ msg: 'Invalid credentials.' });
+    res.status(401).json({ msg: "Invalid credentials." });
   }
 });
 

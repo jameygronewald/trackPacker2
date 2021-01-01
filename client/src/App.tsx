@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Nav from './components/Nav';
-import LandingPage from './views/LandingPage';
-import Register from './views/Register';
-import Inventory from './views/Inventory';
-import { UserContext } from './context/UserContext';
-import setAuthToken from './utils/setAuthTokenToHeaders';
-import { userRequests } from './utils/API/userRequests';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Nav from "./components/Nav";
+import LandingPage from "./views/LandingPage";
+import Register from "./views/Register";
+import Inventory from "./views/Inventory";
+import { UserContext } from "./context/UserContext";
+import setAuthToken from "./utils/setAuthTokenToHeaders";
+import { userRequests } from "./utils/API/userRequests";
 
-import './App.css';
-
-if (localStorage.token) {
-  setAuthToken(localStorage.token);
-}
+import "./App.css";
 
 const App = () => {
   const [userState, setUserState] = useState({
@@ -20,10 +16,11 @@ const App = () => {
     isAuthenticated: false,
     token: null,
   });
-  
+
   const { user, isAuthenticated, token } = userState;
 
   const loadUser = async () => {
+    console.log('loading user...');
     const response = await userRequests.getUser();
     const { user } = response.data;
     setUserState({
@@ -35,12 +32,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("sessionToken");
+    const token = localStorage.getItem("token");
     if (token) {
-      loadUser()
+      setAuthToken(token);
+      loadUser();
     }
   }, []);
-
 
   return (
     <>
@@ -50,9 +47,9 @@ const App = () => {
         >
           <Nav />
           <Switch>
-            <Route exact path='/' component={LandingPage} />
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/inventory' component={Inventory} />
+            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/inventory" component={Inventory} />
           </Switch>
         </UserContext.Provider>
       </Router>
