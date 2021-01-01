@@ -4,6 +4,7 @@ const router = express.Router();
 import createToken from "../utils/createToken";
 import db from "../models";
 
+// AUTHENTICATE A REQUEST
 router.get("/", checkToken, async (req: any, res) => {
   try {
     const userId = req.user.id;
@@ -16,6 +17,7 @@ router.get("/", checkToken, async (req: any, res) => {
   }
 });
 
+// LOGIN A USER
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
 

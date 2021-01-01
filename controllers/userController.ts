@@ -3,6 +3,7 @@ const router = express.Router();
 import db from '../models';
 import createToken from '../utils/createToken';
 
+// REGISTER A NEW USER
 router.post('/register', async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 

@@ -62,8 +62,8 @@ const Register = (props: Props) => {
     localStorage.setItem('token', token);
     setAuthToken(token)
     const userResponse = await userRequests.getUser();
-    console.log(userResponse.data);
-    setUserState({ ...userState, user: userResponse, isAuthenticated: true, token });
+    const { user } = userResponse.data;
+    setUserState({ ...userState, user, isAuthenticated: true, token });
   };
 
   if (isAuthenticated) {
