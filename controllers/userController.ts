@@ -25,7 +25,6 @@ router.post('/register', async (req, res) => {
 
     const token = createToken(payload);
     return res.status(201).json({ token });
-    
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ msg: 'Unable to create new user.' });

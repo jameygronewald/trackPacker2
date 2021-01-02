@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import Dashboard from '../../components/Dashboard';
 // import InventoryList from "../../components/InventoryList/InventoryList";
 import { itemRequests } from '../../utils/API/itemRequests';
 import { NewInventoryItem } from './interfaces';
-
+import { UserContext } from '../../context/UserContext';
 import {
   makeStyles,
   TextField,
@@ -34,18 +34,21 @@ const Inventory = (props: Props) => {
     status: 'Inventory',
   });
 
-  //   let textInput = useRef(null);
+  const { setUserState } = useContext(UserContext);
 
-  //   // ADD ITEM TO INVENTORY
-  //   const handleSubmit = event => {
-  //     event.preventDefault();
-  //     API.addItem(newItem, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //         setNewItem({ ...newItem, name: '' });
-  //       })
-  //       .catch(err => console.log(err));
-  //   };
+  const textInput = useRef<any>(null);
+
+  // ADD ITEM TO INVENTORY
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    try {
+      const response = await itemRequests.addItemToInventory(newItem);
+      setUserState({ user: response.data, isAuthenticated: true });
+      setNewItem({ ...newItem, name: '' });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //   const updateItem = item => {
   //     item.status === 'Wishlist'
@@ -84,8 +87,7 @@ const Inventory = (props: Props) => {
             }}
           >
             <form
-              //   align='center'
-              //   onSubmit={handleSubmit}
+              onSubmit={handleSubmit}
               style={{
                 boxShadow: '10px 10px 5px grey',
                 borderStyle: 'solid',
@@ -96,19 +98,19 @@ const Inventory = (props: Props) => {
                 id='standard-basic'
                 label='Add New Item'
                 name='newItem'
-                // refs='textEl'
-                // inputRef={textInput}
+                // ref='textEl'
+                inputRef={textInput}
                 type='text'
                 placeholder='Add an Item'
                 onChange={e => setNewItem({ ...newItem, name: e.target.value })}
                 style={{ color: '#13160e', borderColor: '#13160e' }}
               />
               <Button
-                // onClick={() => {
-                //   setTimeout(() => {
-                //     textInput.current.value = '';
-                //   }, 100);
-                // }}
+                onClick={() => {
+                  setTimeout(() => {
+                    textInput.current.value = '';
+                  }, 100);
+                }}
                 type='submit'
                 variant='outlined'
                 size='large'
