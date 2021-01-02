@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Dashboard from '../../components/Dashboard';
+// import InventoryList from "../../components/InventoryList/InventoryList";
+import { itemRequests } from '../../utils/API/itemRequests';
+import { NewInventoryItem } from './interfaces';
+
 import {
   makeStyles,
   TextField,
@@ -10,7 +14,6 @@ import {
   Box,
 } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
-// import InventoryList from "../../components/InventoryList/InventoryList";
 
 interface Props {}
 
@@ -26,16 +29,13 @@ const Inventory = (props: Props) => {
 
   const classes = useStyles();
 
-  // const [newItem, setNewItem] = useState({
-  //   name: '',
-  //   status: 'Inventory',
-  // });
+  const [newItem, setNewItem] = useState({
+    name: '',
+    status: 'Inventory',
+  });
 
   //   let textInput = useRef(null);
 
-  //   const handleChange = ({ target: { value } }) => {
-  //     setNewItem({ ...newItem, name: value });
-  //   };
   //   // ADD ITEM TO INVENTORY
   //   const handleSubmit = event => {
   //     event.preventDefault();
@@ -45,12 +45,6 @@ const Inventory = (props: Props) => {
   //         setNewItem({ ...newItem, name: '' });
   //       })
   //       .catch(err => console.log(err));
-  //   };
-
-  //   const toggleChecked = e => {
-  //     e.target.checked
-  //       ? setNewItem({ ...newItem, status: 'Wishlist' })
-  //       : setNewItem({ ...newItem, status: 'Inventory' });
   //   };
 
   //   const updateItem = item => {
@@ -90,8 +84,8 @@ const Inventory = (props: Props) => {
             }}
           >
             <form
-            //   align='center'
-            //   onSubmit={handleSubmit}
+              //   align='center'
+              //   onSubmit={handleSubmit}
               style={{
                 boxShadow: '10px 10px 5px grey',
                 borderStyle: 'solid',
@@ -106,7 +100,7 @@ const Inventory = (props: Props) => {
                 // inputRef={textInput}
                 type='text'
                 placeholder='Add an Item'
-                // onChange={handleChange}
+                onChange={e => setNewItem({ ...newItem, name: e.target.value })}
                 style={{ color: '#13160e', borderColor: '#13160e' }}
               />
               <Button
@@ -132,7 +126,11 @@ const Inventory = (props: Props) => {
                     name='wishlist'
                     id='wishlist'
                     style={{ color: '#832d33', borderColor: '#13160e' }}
-                    // onChange={toggleChecked}
+                    onChange={e => {
+                      e.target.checked
+                        ? setNewItem({ ...newItem, status: 'Wishlist' })
+                        : setNewItem({ ...newItem, status: 'Inventory' });
+                    }}
                   />
                 }
                 label='Add to Wishlist'
