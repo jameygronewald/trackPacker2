@@ -10,7 +10,7 @@ router.get("/", checkToken, async (req: any, res) => {
     const userId = req.user.id;
     const user = await db.User.findById(userId).select("-password");
 
-    res.status(200).json({ user });
+    res.status(201).json({ user });
   } catch (error) {
     console.error(error.message);
     res.status(401).json({ msg: "Invalid jwt." });
@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
     };
 
     const token = createToken(payload);
-    res.json({ token });
+    res.status(201).json({ token });
   } catch (error) {
     console.error(error.message);
     res.status(401).json({ msg: "Invalid credentials." });

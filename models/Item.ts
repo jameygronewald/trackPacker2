@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -11,7 +11,7 @@ const ItemSchema = new Schema({
   status: {
     type: String,
     enum: ["Inventory", "Wishlist"],
-    default: "Inventory"
+    default: "Inventory",
   },
 });
 

@@ -16,6 +16,8 @@ app.use(cors());
 // Route imports
 app.use('/api/auth', require('../controllers/authController'));
 app.use('/api/user', require('../controllers/userController'));
+app.use('/api/item', require('../controllers/itemController'));
+app.use('/api/excursion', require('../controllers/excursionController'));
 
 // Check for production environment and serve static client build
 if (process.env.NODE_ENV === 'production') {
