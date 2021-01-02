@@ -3,6 +3,7 @@ const router = express.Router();
 import db from '../models';
 import createToken from '../utils/createToken';
 
+// REGISTER A NEW USER
 router.post('/register', async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
@@ -23,7 +24,7 @@ router.post('/register', async (req, res) => {
     };
 
     const token = createToken(payload);
-    return res.json({ token });
+    return res.status(201).json({ token });
     
   } catch (error) {
     console.error(error.message);
