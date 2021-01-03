@@ -59,15 +59,14 @@ const Inventory = (props: Props) => {
     }
   };
 
-  //   const deleteItem = id => {
-  //     API.deleteItem(id, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   };
+  const deleteItem = async (itemId: string) => {
+    try {
+      const response = await itemRequests.deleteItemFromInventory(itemId);
+      setUserState({ ...userState, user: response.data.user });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -134,7 +133,8 @@ const Inventory = (props: Props) => {
                 label='Add to Wishlist'
               />
             </form>
-            <InventoryList updateItem={updateItem} /* deleteItem={deleteItem} */
+            <InventoryList
+              updateItem={updateItem} deleteItem={deleteItem}
             />
           </Box>
         </Grid>

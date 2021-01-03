@@ -29,10 +29,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface InventoryListProps {
-    updateItem: (itemId: string) => Promise<void>;
+  updateItem: (itemId: string) => Promise<void>;
+  deleteItem: (itemId: string) => Promise<void>;
 }
 
-const InventoryList: React.FC<InventoryListProps> = (props: InventoryListProps): JSX.Element => {
+const InventoryList: React.FC<InventoryListProps> = (
+  props: InventoryListProps
+): JSX.Element => {
   const classes = useStyles();
 
   const { user } = useContext(UserContext);
@@ -71,9 +74,9 @@ const InventoryList: React.FC<InventoryListProps> = (props: InventoryListProps):
                           <IconButton
                             edge='end'
                             aria-label='delete'
-                            // onClick={() => {
-                            //   props.deleteItem(item._id);
-                            // }}
+                            onClick={() => {
+                              props.deleteItem(item._id);
+                            }}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -119,9 +122,9 @@ const InventoryList: React.FC<InventoryListProps> = (props: InventoryListProps):
                           <IconButton
                             edge='end'
                             aria-label='delete'
-                            // onClick={() => {
-                            //   props.deleteItem(item._id);
-                            // }}
+                            onClick={() => {
+                              props.deleteItem(item._id);
+                            }}
                           >
                             <DeleteIcon />
                           </IconButton>
