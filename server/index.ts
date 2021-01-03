@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-import connectDB from './config/db';
+const connectDB = require('./config/db');
 
 const app = express();
 
