@@ -63,7 +63,7 @@ const Register = (props: Props) => {
     setAuthToken(token)
     const userResponse = await userRequests.getUser();
     const { user } = userResponse.data;
-    setUserState({ ...userState, user, isAuthenticated: true, token });
+    setUserState({ ...userState, user, isAuthenticated: true });
   };
 
   if (isAuthenticated) {

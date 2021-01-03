@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import Dashboard from '../../components/Dashboard';
+import InventoryList from './InventoryList';
+import { itemRequests } from '../../utils/API/itemRequests';
+import { InventoryItem } from './interfaces';
+import { UserContext } from '../../context/UserContext';
 import {
   makeStyles,
   TextField,
@@ -10,7 +14,6 @@ import {
   Box,
 } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
-// import InventoryList from "../../components/InventoryList/InventoryList";
 
 interface Props {}
 
@@ -26,45 +29,35 @@ const Inventory = (props: Props) => {
 
   const classes = useStyles();
 
-  // const [newItem, setNewItem] = useState({
-  //   name: '',
-  //   status: 'Inventory',
-  // });
+  const [newItem, setNewItem] = useState<InventoryItem>({
+    name: '',
+    status: 'Inventory',
+  });
 
-  //   let textInput = useRef(null);
+  const { setUserState, userState } = useContext(UserContext);
 
-  //   const handleChange = ({ target: { value } }) => {
-  //     setNewItem({ ...newItem, name: value });
-  //   };
-  //   // ADD ITEM TO INVENTORY
-  //   const handleSubmit = event => {
-  //     event.preventDefault();
-  //     API.addItem(newItem, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //         setNewItem({ ...newItem, name: '' });
-  //       })
-  //       .catch(err => console.log(err));
-  //   };
+  const textInput = useRef<any>(null);
 
-  //   const toggleChecked = e => {
-  //     e.target.checked
-  //       ? setNewItem({ ...newItem, status: 'Wishlist' })
-  //       : setNewItem({ ...newItem, status: 'Inventory' });
-  //   };
+  // ADD ITEM TO INVENTORY
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    try {
+      const response = await itemRequests.addItemToInventory(newItem);
+      setUserState({ ...userState, user: response.data });
+      setNewItem({ ...newItem, name: '' });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   const updateItem = item => {
-  //     item.status === 'Wishlist'
-  //       ? (item.status = 'Inventory')
-  //       : (item.status = 'Wishlist');
-  //     API.updateItem(item, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...userData, isAuthenticated: true });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   };
+  const updateItem = async (itemId: string) => {
+    try {
+      const response = await itemRequests.updateItemStatus(itemId);
+      setUserState({ ...userState, user: response.data.user });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //   const deleteItem = id => {
   //     API.deleteItem(id, authConfig(userToken))
@@ -90,8 +83,7 @@ const Inventory = (props: Props) => {
             }}
           >
             <form
-            //   align='center'
-            //   onSubmit={handleSubmit}
+              onSubmit={handleSubmit}
               style={{
                 boxShadow: '10px 10px 5px grey',
                 borderStyle: 'solid',
@@ -102,19 +94,19 @@ const Inventory = (props: Props) => {
                 id='standard-basic'
                 label='Add New Item'
                 name='newItem'
-                // refs='textEl'
-                // inputRef={textInput}
+                // ref='textEl'
+                inputRef={textInput}
                 type='text'
                 placeholder='Add an Item'
-                // onChange={handleChange}
+                onChange={e => setNewItem({ ...newItem, name: e.target.value })}
                 style={{ color: '#13160e', borderColor: '#13160e' }}
               />
               <Button
-                // onClick={() => {
-                //   setTimeout(() => {
-                //     textInput.current.value = '';
-                //   }, 100);
-                // }}
+                onClick={() => {
+                  setTimeout(() => {
+                    textInput.current.value = '';
+                  }, 100);
+                }}
                 type='submit'
                 variant='outlined'
                 size='large'
@@ -132,13 +124,18 @@ const Inventory = (props: Props) => {
                     name='wishlist'
                     id='wishlist'
                     style={{ color: '#832d33', borderColor: '#13160e' }}
-                    // onChange={toggleChecked}
+                    onChange={e => {
+                      e.target.checked
+                        ? setNewItem({ ...newItem, status: 'Wishlist' })
+                        : setNewItem({ ...newItem, status: 'Inventory' });
+                    }}
                   />
                 }
                 label='Add to Wishlist'
               />
             </form>
-            {/* <InventoryList updateItem={updateItem} deleteItem={deleteItem} /> */}
+            <InventoryList updateItem={updateItem} /* deleteItem={deleteItem} */
+            />
           </Box>
         </Grid>
       </Grid>
