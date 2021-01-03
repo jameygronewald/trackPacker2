@@ -1,12 +1,33 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const connect = require('./config/db');
+// const connect = require('./config/db');
 
 const app = express();
 
 // Database connection from config directory
-connect();
+// connect();
+
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    });
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error(error.message);
+    // Exit process w failure
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
