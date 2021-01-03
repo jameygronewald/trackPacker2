@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from 'react';
 import Dashboard from '../../components/Dashboard';
-// import InventoryList from "../../components/InventoryList/InventoryList";
+import InventoryList from './InventoryList';
 import { itemRequests } from '../../utils/API/itemRequests';
 import { NewInventoryItem } from './interfaces';
 import { UserContext } from '../../context/UserContext';
@@ -29,7 +29,7 @@ const Inventory = (props: Props) => {
 
   const classes = useStyles();
 
-  const [newItem, setNewItem] = useState({
+  const [newItem, setNewItem] = useState<NewInventoryItem>({
     name: '',
     status: 'Inventory',
   });
@@ -138,7 +138,8 @@ const Inventory = (props: Props) => {
                 label='Add to Wishlist'
               />
             </form>
-            {/* <InventoryList updateItem={updateItem} deleteItem={deleteItem} /> */}
+            <InventoryList /* updateItem={updateItem} deleteItem={deleteItem} */
+            />
           </Box>
         </Grid>
       </Grid>

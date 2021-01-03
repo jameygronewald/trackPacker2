@@ -10,15 +10,13 @@ router.post('/', checkToken, async (req: any, res) => {
   try {
     if (!name || !status) throw new Error('Unable to create new item.');
 
-    const user = await db.User.findOne({ _id: userId });
+    const user = await db.User.findOne({ _id: userId }).populate('items');
     if (!user) throw new Error('Unable to create new item.');
 
     const newItem = new db.Item({ name, status });
-
     const item = await newItem.save();
 
-    user.items.push(item._id);
-
+    user.items.push(item);
     await user.save();
 
     res.status(200).json(user);
