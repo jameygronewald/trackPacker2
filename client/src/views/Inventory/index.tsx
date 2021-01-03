@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import Dashboard from '../../components/Dashboard';
 import InventoryList from './InventoryList';
 import { itemRequests } from '../../utils/API/itemRequests';
-import { InventoryItem } from './interfaces';
+import { NewInventoryItem } from './interfaces';
 import { UserContext } from '../../context/UserContext';
 import {
   makeStyles,
@@ -29,7 +29,7 @@ const Inventory = (props: Props) => {
 
   const classes = useStyles();
 
-  const [newItem, setNewItem] = useState<InventoryItem>({
+  const [newItem, setNewItem] = useState<NewInventoryItem>({
     name: '',
     status: 'Inventory',
   });
@@ -59,15 +59,14 @@ const Inventory = (props: Props) => {
     }
   };
 
-  //   const deleteItem = id => {
-  //     API.deleteItem(id, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   };
+  const deleteItem = async (itemId: string) => {
+    try {
+      const response = await itemRequests.deleteItemFromInventory(itemId);
+      setUserState({ ...userState, user: response.data.user });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -76,7 +75,7 @@ const Inventory = (props: Props) => {
         <Grid item xs={12} sm={2}>
           <Dashboard />
         </Grid>
-        <Grid item xs={12} sm={5}>
+        <Grid item xs={12} sm={9}>
           <Box
             style={{
               marginTop: '10px',
@@ -134,7 +133,8 @@ const Inventory = (props: Props) => {
                 label='Add to Wishlist'
               />
             </form>
-            <InventoryList updateItem={updateItem} /* deleteItem={deleteItem} */
+            <InventoryList
+              updateItem={updateItem} deleteItem={deleteItem}
             />
           </Box>
         </Grid>

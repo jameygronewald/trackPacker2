@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Nav = () => {
+const Nav: React.FC = (): JSX.Element => {
   const classes = useStyles();
   return (
     <div className={`${classes.root} navbar`}>

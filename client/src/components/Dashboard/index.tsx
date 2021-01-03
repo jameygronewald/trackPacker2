@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const User = () => {
+const Dashboard: React.FC = (): JSX.Element => {
   const classes = useStyles();
 
   const { user } = useContext(UserContext);
@@ -36,4 +36,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Dashboard;

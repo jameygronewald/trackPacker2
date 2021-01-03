@@ -3,13 +3,11 @@ import { createContext } from 'react';
 interface UserContextState {
   user: null | object;
   isAuthenticated: boolean;
-  token: null | string;
 }
 
 const userState: UserContextState = {
   user: null,
   isAuthenticated: false,
-  token: null,
 };
 
 export const UserContext: React.Context<any> = createContext(userState);

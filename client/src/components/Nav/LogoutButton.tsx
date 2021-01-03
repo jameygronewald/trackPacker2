@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { handleLogout } from './functions';
+import { UserContext } from '../../context/UserContext';
+
 import { makeStyles, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -17,10 +18,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LogoutButton = () => {
+const LogoutButton: React.FC = (): JSX.Element => {
   const classes = useStyles();
 
-  
+  const { setUserState } = useContext(UserContext);
 
   return (
     <div className={classes.root}>
@@ -29,7 +30,10 @@ const LogoutButton = () => {
           <Button
             variant='contained'
             className={classes.button}
-            onClick={handleLogout}
+            onClick={() => {
+              localStorage.clear();
+              setUserState({ user: null, isAuthenticated: false });
+            }}
           >
             Logout
           </Button>

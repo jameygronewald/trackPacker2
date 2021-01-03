@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
+import { InventoryItem, InventoryListProps } from './interfaces';
 
 import {
   makeStyles,
@@ -28,14 +29,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface InventoryListProps {
-    updateItem: (itemId: string) => Promise<void>;
-}
-
-const InventoryList: React.FC<InventoryListProps> = (props: InventoryListProps): JSX.Element => {
+const InventoryList: React.FC<InventoryListProps> = (
+  props: InventoryListProps
+): JSX.Element => {
   const classes = useStyles();
 
+  const { updateItem, deleteItem } = props;
+
   const { user } = useContext(UserContext);
+
+  let inventoryItems: InventoryItem[] | null = null;
+  if (user)
+    inventoryItems = user.items.filter(
+      (item: InventoryItem) => item.status === 'Inventory'
+    );
+
+  let wishlistItems: InventoryItem[] | null = null;
+  if (user)
+    wishlistItems = user.items.filter(
+      (item: InventoryItem) => item.status === 'Wishlist'
+    );
 
   return (
     <div className={classes.root}>
@@ -46,41 +59,35 @@ const InventoryList: React.FC<InventoryListProps> = (props: InventoryListProps):
           </Typography>
           <div className={classes.demo}>
             <List>
-              {user && user.items && user.items.length > 0 ? (
-                user.items
-                  .filter((item: any) => item.status === 'Inventory')
-                  .map((item: any) => (
-                    <div key={item._id}>
-                      <ListItem>
-                        <ListItemText primary={item.name} />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge='end'
-                            aria-label='update'
-                            onClick={() => {
-                              props.updateItem(item._id);
+              {user && inventoryItems !== null && inventoryItems.length > 0 ? (
+                inventoryItems.map((item: InventoryItem) => (
+                  <div key={item._id}>
+                    <ListItem>
+                      <ListItemText primary={item.name} />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          edge='end'
+                          aria-label='update'
+                          onClick={() => updateItem(item._id)}
+                        >
+                          <FavoriteBorderIcon
+                            style={{
+                              color: '#832d33',
+                              borderColor: '#13160e',
                             }}
-                          >
-                            <FavoriteBorderIcon
-                              style={{
-                                color: '#832d33',
-                                borderColor: '#13160e',
-                              }}
-                            />
-                          </IconButton>
-                          <IconButton
-                            edge='end'
-                            aria-label='delete'
-                            // onClick={() => {
-                            //   props.deleteItem(item._id);
-                            // }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </div>
-                  ))
+                          />
+                        </IconButton>
+                        <IconButton
+                          edge='end'
+                          aria-label='delete'
+                          onClick={() => deleteItem(item._id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </div>
+                ))
               ) : (
                 <Typography>No items currently stored in Inventory.</Typography>
               )}
@@ -94,41 +101,35 @@ const InventoryList: React.FC<InventoryListProps> = (props: InventoryListProps):
           </Typography>
           <div className={classes.demo}>
             <List>
-              {user && user.items && user.items.length > 0 ? (
-                user.items
-                  .filter((item: any) => item.status === 'Wishlist')
-                  .map((item: any) => (
-                    <div key={item._id}>
-                      <ListItem>
-                        <ListItemText primary={item.name} />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge='end'
-                            aria-label='update'
-                            onClick={() => {
-                              props.updateItem(item._id);
+              {user && wishlistItems !== null && wishlistItems.length > 0 ? (
+                wishlistItems.map((item: InventoryItem) => (
+                  <div key={item._id}>
+                    <ListItem>
+                      <ListItemText primary={item.name} />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          edge='end'
+                          aria-label='update'
+                          onClick={() => updateItem(item._id)}
+                        >
+                          <FavoriteIcon
+                            style={{
+                              color: '#832d33',
+                              borderColor: '#13160e',
                             }}
-                          >
-                            <FavoriteIcon
-                              style={{
-                                color: '#832d33',
-                                borderColor: '#13160e',
-                              }}
-                            />
-                          </IconButton>
-                          <IconButton
-                            edge='end'
-                            aria-label='delete'
-                            // onClick={() => {
-                            //   props.deleteItem(item._id);
-                            // }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </div>
-                  ))
+                          />
+                        </IconButton>
+                        <IconButton
+                          edge='end'
+                          aria-label='delete'
+                          onClick={() => deleteItem(item._id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </div>
+                ))
               ) : (
                 <Typography>No items currently stored in Wishlist.</Typography>
               )}
