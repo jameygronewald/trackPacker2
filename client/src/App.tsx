@@ -39,9 +39,7 @@ const App = () => {
   return (
     <>
       <Router>
-        <UserContext.Provider
-          value={{ user, isAuthenticated, setUserState }}
-        >
+        <UserContext.Provider value={{ user, isAuthenticated, setUserState }}>
           <Nav />
           <Switch>
             <Route exact path='/' component={LandingPage} />
