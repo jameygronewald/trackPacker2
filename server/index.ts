@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const connectDB = require('./config/db');
+const connect = require('./config/db');
 
 const app = express();
 
 // Database connection from config directory
-connectDB();
+connect();
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
