@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import Dashboard from '../../components/Dashboard';
 import InventoryList from './InventoryList';
 import { itemRequests } from '../../utils/API/itemRequests';
-import { InventoryItem } from './interfaces';
+import { NewInventoryItem } from './interfaces';
 import { UserContext } from '../../context/UserContext';
 import {
   makeStyles,
@@ -29,7 +29,7 @@ const Inventory = (props: Props) => {
 
   const classes = useStyles();
 
-  const [newItem, setNewItem] = useState<InventoryItem>({
+  const [newItem, setNewItem] = useState<NewInventoryItem>({
     name: '',
     status: 'Inventory',
   });
@@ -75,7 +75,7 @@ const Inventory = (props: Props) => {
         <Grid item xs={12} sm={2}>
           <Dashboard />
         </Grid>
-        <Grid item xs={12} sm={5}>
+        <Grid item xs={12} sm={9}>
           <Box
             style={{
               marginTop: '10px',

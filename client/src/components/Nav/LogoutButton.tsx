@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LogoutButton = () => {
+const LogoutButton: React.FC = (): JSX.Element => {
   const classes = useStyles();
 
   const { setUserState } = useContext(UserContext);
