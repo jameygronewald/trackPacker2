@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { handleLogout } from './functions';
 import { UserContext } from '../../context/UserContext';
 
 import { makeStyles, Button } from '@material-ui/core';
@@ -32,7 +31,7 @@ const LogoutButton = () => {
             variant='contained'
             className={classes.button}
             onClick={() => {
-              handleLogout();
+              localStorage.clear();
               setUserState({ user: null, isAuthenticated: false });
             }}
           >
