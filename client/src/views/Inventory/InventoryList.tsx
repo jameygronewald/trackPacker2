@@ -28,7 +28,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const InventoryList = (props: any) => {
+interface InventoryListProps {
+    updateItem: (itemId: string) => Promise<void>;
+}
+
+const InventoryList: React.FC<InventoryListProps> = (props: InventoryListProps): JSX.Element => {
   const classes = useStyles();
 
   const { user } = useContext(UserContext);
@@ -53,9 +57,9 @@ const InventoryList = (props: any) => {
                           <IconButton
                             edge='end'
                             aria-label='update'
-                            // onClick={() => {
-                            //   props.updateItem(item);
-                            // }}
+                            onClick={() => {
+                              props.updateItem(item._id);
+                            }}
                           >
                             <FavoriteBorderIcon
                               style={{
@@ -101,9 +105,9 @@ const InventoryList = (props: any) => {
                           <IconButton
                             edge='end'
                             aria-label='update'
-                            // onClick={() => {
-                            //   props.updateItem(item);
-                            // }}
+                            onClick={() => {
+                              props.updateItem(item._id);
+                            }}
                           >
                             <FavoriteIcon
                               style={{

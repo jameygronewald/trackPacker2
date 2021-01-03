@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import Dashboard from '../../components/Dashboard';
 import InventoryList from './InventoryList';
 import { itemRequests } from '../../utils/API/itemRequests';
-import { NewInventoryItem } from './interfaces';
+import { InventoryItem } from './interfaces';
 import { UserContext } from '../../context/UserContext';
 import {
   makeStyles,
@@ -29,12 +29,12 @@ const Inventory = (props: Props) => {
 
   const classes = useStyles();
 
-  const [newItem, setNewItem] = useState<NewInventoryItem>({
+  const [newItem, setNewItem] = useState<InventoryItem>({
     name: '',
     status: 'Inventory',
   });
 
-  const { setUserState } = useContext(UserContext);
+  const { setUserState, userState } = useContext(UserContext);
 
   const textInput = useRef<any>(null);
 
@@ -43,25 +43,21 @@ const Inventory = (props: Props) => {
     event.preventDefault();
     try {
       const response = await itemRequests.addItemToInventory(newItem);
-      setUserState({ user: response.data, isAuthenticated: true });
+      setUserState({ ...userState, user: response.data });
       setNewItem({ ...newItem, name: '' });
     } catch (error) {
       console.log(error);
     }
   };
 
-  //   const updateItem = item => {
-  //     item.status === 'Wishlist'
-  //       ? (item.status = 'Inventory')
-  //       : (item.status = 'Wishlist');
-  //     API.updateItem(item, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...userData, isAuthenticated: true });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   };
+  const updateItem = async (itemId: string) => {
+    try {
+      const response = await itemRequests.updateItemStatus(itemId);
+      setUserState({ ...userState, user: response.data.user });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //   const deleteItem = id => {
   //     API.deleteItem(id, authConfig(userToken))
@@ -138,7 +134,7 @@ const Inventory = (props: Props) => {
                 label='Add to Wishlist'
               />
             </form>
-            <InventoryList /* updateItem={updateItem} deleteItem={deleteItem} */
+            <InventoryList updateItem={updateItem} /* deleteItem={deleteItem} */
             />
           </Box>
         </Grid>
