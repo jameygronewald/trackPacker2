@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as path from 'path';
-import * as cors from 'cors';
+const express = require('express');
+const path = require('path');
+const cors = require('cors');
 import connectDB from './config/db';
 
 const app = express();
