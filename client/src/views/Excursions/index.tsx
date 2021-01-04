@@ -3,7 +3,7 @@ import Dashboard from '../../components/Dashboard';
 import ExcursionCard from './ExcursionCard';
 import { excursionRequests } from '../../utils/API/excursionRequests';
 import { UserContext } from '../../context/UserContext';
-import { Excursion, NewExcursion } from './interfaces';
+import { IExcursion, NewExcursion } from './interfaces';
 
 import { TextField, Grid, Button, Box, Divider } from '@material-ui/core';
 
@@ -12,7 +12,7 @@ const Excursions: React.FC = (): JSX.Element => {
     name: '',
   });
 
-  const { user, userState, setUserState } = useContext(UserContext);
+  const { user, setUserState } = useContext(UserContext);
 
   const textInput = useRef<any>(null);
 
@@ -20,7 +20,7 @@ const Excursions: React.FC = (): JSX.Element => {
   const addExcursion = async (excursion: NewExcursion) => {
     try {
       const response = await excursionRequests.addExcursion(excursion);
-      setUserState({ ...userState, user: response.data });
+      setUserState({ user: response.data, isAuthenticated: true });
       setNewExcursion({ name: '' });
     } catch (error) {
       console.log(error);
@@ -80,7 +80,7 @@ const Excursions: React.FC = (): JSX.Element => {
           <Divider variant='middle' />
           {user &&
             user.excursions.length > 0 &&
-            user.excursions.map((excursion: Excursion) => (
+            user.excursions.map((excursion: IExcursion) => (
               <Grid item xs={12} sm={12} key={excursion._id}>
                 <Box display='flex' p={1} mx='auto'>
                   <ExcursionCard

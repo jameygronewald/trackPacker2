@@ -1,6 +1,6 @@
 import { InventoryItem } from '../Inventory/interfaces';
 
-export interface Excursion {
+export interface IExcursion {
   _id: string;
   name: string;
   items: InventoryItem[];

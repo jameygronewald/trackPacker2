@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { excursionRequests } from '../../utils/API/excursionRequests';
 import { useParams } from 'react-router-dom';
 import Dashboard from '../../components/Dashboard';
@@ -6,6 +6,8 @@ import Dashboard from '../../components/Dashboard';
 // import ExcursionInventoryList from '../../components/ExcursionInventoryList/ExcursionInventoryList';
 // import ExcursionInventoryWishList from '../../components/ExcursionInventoryWishList/ExcursionInventoryWishList';
 import { UserContext } from '../../context/UserContext';
+import { IExcursion } from '../Excursions/interfaces';
+import { ExcursionQueryParams } from './interfaces';
 
 import { Typography, Grid, Box, Divider, makeStyles } from '@material-ui/core';
 
@@ -23,21 +25,11 @@ const useStyles = makeStyles(theme => ({
 const Excursion: React.FC = (): JSX.Element => {
   const classes = useStyles();
 
-  const [currentExcursion, setCurrentExcursion] = useState({});
-
   const { user, setUserState } = useContext(UserContext);
-  const { id: excursionId } = useParams<any>();
+  const { id: excursionId } = useParams<ExcursionQueryParams>();
 
-//   useEffect(() => {
-//     API.getExcursion(id, authConfig(localStorage.getItem('sessionToken')))
-//       .then(response => {
-//         const excursionState = response.data.data;
-//         setCurrentExcursion(excursionState);
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       });
-//   }, [id]);
+  let currentExcursion: IExcursion | null = null;
+  if (user) [currentExcursion] = user.excursions.filter((excursion: IExcursion) => excursion._id === excursionId);
 
 //   const addToExcursion = id => {
 //     let currentExcursionData = userData.excursions.reduce(
@@ -74,7 +66,7 @@ const Excursion: React.FC = (): JSX.Element => {
         <Grid item xs={12} sm={10}>
           <Box display='flex' p={0.8} mx='auto'>
             <Typography className={classes.title} variant='h3'>
-              {/* {currentExcursion.name} */}
+              {user && currentExcursion !== null && currentExcursion.name}
             </Typography>
           </Box>
           <Divider variant='middle' />
@@ -91,7 +83,7 @@ const Excursion: React.FC = (): JSX.Element => {
             </Grid>
             <Grid className={classes.list} item xs={12} sm={6}>
               <Typography className={classes.title} variant='h5'>
-                {/* Inventory for {currentExcursion.name} */}
+                Inventory for {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
               {/* {currentExcursion.items &&
@@ -106,7 +98,7 @@ const Excursion: React.FC = (): JSX.Element => {
                   ))} */}
 
               <Typography className={classes.title} variant='h5'>
-                {/* Wishlist for {currentExcursion.name} */}
+                Wishlist for {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
               {/* {currentExcursion.items &&
