@@ -4,6 +4,7 @@ import InventoryList from './InventoryList';
 import { itemRequests } from '../../utils/API/itemRequests';
 import { NewInventoryItem } from './interfaces';
 import { UserContext } from '../../context/UserContext';
+
 import {
   makeStyles,
   TextField,
@@ -14,6 +15,7 @@ import {
   Box,
 } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
+import './Inventory.css';
 
 interface Props {}
 
@@ -75,13 +77,20 @@ const Inventory = (props: Props) => {
         <Grid item xs={12} sm={2}>
           <Dashboard />
         </Grid>
-        <Grid item xs={12} sm={9}>
+        <Grid
+          className='inventoryContainer'
+          style={{ marginLeft: '3vw' }}
+          item
+          xs={12}
+          sm={9}
+        >
           <Box
             style={{
               marginTop: '10px',
             }}
           >
             <form
+              className='addItemForm'
               onSubmit={handleSubmit}
               style={{
                 boxShadow: '10px 10px 5px grey',
@@ -100,21 +109,6 @@ const Inventory = (props: Props) => {
                 onChange={e => setNewItem({ ...newItem, name: e.target.value })}
                 style={{ color: '#13160e', borderColor: '#13160e' }}
               />
-              <Button
-                onClick={() => {
-                  setTimeout(() => {
-                    textInput.current.value = '';
-                  }, 100);
-                }}
-                type='submit'
-                variant='outlined'
-                size='large'
-                color='default'
-                style={{ color: '#13160e', borderColor: '#13160e' }}
-                className={classes.margin}
-              >
-                Add to Inventory
-              </Button>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -130,12 +124,25 @@ const Inventory = (props: Props) => {
                     }}
                   />
                 }
-                label='Add to Wishlist'
+                label='Wishlist'
               />
+              <Button
+                onClick={() => {
+                  setTimeout(() => {
+                    textInput.current.value = '';
+                  }, 100);
+                }}
+                type='submit'
+                variant='outlined'
+                size='large'
+                color='default'
+                style={{ color: '#13160e', borderColor: '#13160e' }}
+                className={classes.margin}
+              >
+                Add to {'Inventory'}
+              </Button>
             </form>
-            <InventoryList
-              updateItem={updateItem} deleteItem={deleteItem}
-            />
+            <InventoryList updateItem={updateItem} deleteItem={deleteItem} />
           </Box>
         </Grid>
       </Grid>

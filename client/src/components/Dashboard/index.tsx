@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-// import ProfileLink from "../ProfileLink/ProfileLink";
+import ProfileLink from './ProfileLink';
 import { UserContext } from '../../context/UserContext';
 import { makeStyles, Box, Typography, Divider } from '@material-ui/core';
 
@@ -24,14 +24,13 @@ const Dashboard: React.FC = (): JSX.Element => {
         p={2.3}
         mx='auto'
       >
-        <Typography
-          className={classes.title}
-          variant='h5'
-        >{user && `${user.firstName} ${user.lastName}`}</Typography>
+        <Typography className={`${classes.title} nameOfUser`} variant='h5'>
+          {user && `${user.firstName} ${user.lastName}`}
+        </Typography>
       </Box>
       <Divider variant='middle' />
-      {/* <ProfileLink link="Inventory" />
-      <ProfileLink link="Excursions" /> */}
+      <ProfileLink link='inventory' />
+      <ProfileLink link='excursions' />
     </>
   );
 };
