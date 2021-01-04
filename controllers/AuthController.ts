@@ -10,7 +10,8 @@ router.get('/', checkToken, async (req: any, res) => {
     const userId = req.user.id;
     const user = await db.User.findById(userId)
       .select('-password -_id')
-      .populate('items');
+      .populate('items')
+      .populate('excursions');
 
     res.status(201).json({ user });
   } catch (error) {

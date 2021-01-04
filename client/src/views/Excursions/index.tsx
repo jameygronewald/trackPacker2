@@ -1,27 +1,32 @@
 import React, { useState, useContext, useRef } from 'react';
 // import ExcursionCard from '../../components/ExcursionCard/ExcursionCard';
 import Dashboard from '../../components/Dashboard';
+import { excursionRequests } from '../../utils/API/excursionRequests';
 import { UserContext } from '../../context/UserContext';
+import { Excursion, NewExcursion } from './interfaces';
 
 import { TextField, Grid, Button, Box, Divider } from '@material-ui/core';
 
 const Excursions: React.FC = (): JSX.Element => {
-  const [newExcursion, setNewExcursion] = useState<string>('');
+  const [newExcursion, setNewExcursion] = useState<NewExcursion>({
+    name: '',
+  });
 
-  const { user, setUserState } = useContext(UserContext);
+  const { user, userState, setUserState } = useContext(UserContext);
 
   const textInput = useRef<any>(null);
 
-    const handleSubmit = (e: any) => {
-      e.preventDefault();
-  //     const excursionObj = { name: newExcursion };
-  //     API.addExcursion(excursionObj, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //         setNewExcursion({ name: '' });
-  //       })
-  //       .catch(err => console.log(err));
-    };
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await excursionRequests.addExcursion(newExcursion);
+      console.log(response.data)
+      setUserState({ ...userState, user: response.data });
+      setNewExcursion({ name: '' });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //   const deleteExcursion = id => {
   //     API.deleteExcursion(id, authConfig(userToken))
@@ -54,7 +59,7 @@ const Excursions: React.FC = (): JSX.Element => {
                 name='newExcursion'
                 inputRef={textInput}
                 placeholder='Add an Excursion'
-                onChange={e => setNewExcursion(e.target.value)}
+                onChange={e => setNewExcursion({ name: e.target.value })}
               ></TextField>
               <Button
                 type='submit'
@@ -69,8 +74,9 @@ const Excursions: React.FC = (): JSX.Element => {
             </form>
           </Box>
           <Divider variant='middle' />
-          {user.excursions &&
-            user.excursions.map((excursion:any) => (
+          {user &&
+            user.excursions.length > 0 &&
+            user.excursions.map((excursion: Excursion) => (
               <Grid item xs={12} sm={12} key={excursion._id}>
                 <Box display='flex' p={1} mx='auto'>
                   {/* <ExcursionCard
