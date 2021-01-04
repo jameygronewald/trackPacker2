@@ -11,7 +11,12 @@ router.get('/', checkToken, async (req: any, res) => {
     const user = await db.User.findById(userId)
       .select('-password -_id')
       .populate('items')
-      .populate('excursions');
+      .populate({
+        path: 'excursions',
+        populate: {
+          path: 'items',
+        },
+      });
 
     res.status(201).json({ user });
   } catch (error) {

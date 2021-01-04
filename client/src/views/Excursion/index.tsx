@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { excursionRequests } from '../../utils/API/excursionRequests';
 import { useParams } from 'react-router-dom';
 import Dashboard from '../../components/Dashboard';
-// import ExcursionInventoryListAdd from '../../components/ExcursionInventoryListAdd/ExcursionInventoryListAdd';
+import AddToExcursionList from './AddToExcursionList';
 // import ExcursionInventoryList from '../../components/ExcursionInventoryList/ExcursionInventoryList';
 // import ExcursionInventoryWishList from '../../components/ExcursionInventoryWishList/ExcursionInventoryWishList';
 import { UserContext } from '../../context/UserContext';
@@ -29,32 +29,35 @@ const Excursion: React.FC = (): JSX.Element => {
   const { id: excursionId } = useParams<ExcursionQueryParams>();
 
   let currentExcursion: IExcursion | null = null;
-  if (user) [currentExcursion] = user.excursions.filter((excursion: IExcursion) => excursion._id === excursionId);
+  if (user)
+    [currentExcursion] = user.excursions.filter(
+      (excursion: IExcursion) => excursion._id === excursionId
+    );
 
-//   const addToExcursion = id => {
-//     let currentExcursionData = userData.excursions.reduce(
-//       (excursionObject, excursion) =>
-//         excursion._id === excursionId
-//           ? (excursionObject = { ...excursion })
-//           : excursionObject,
-//       {}
-//     );
-//     currentExcursionData.items.push(id);
-//     const itemObj = { items: currentExcursionData.items };
-//     API.updateExcursionInventory(
-//       currentExcursionData._id,
-//       itemObj,
-//       authConfig(userToken)
-//     )
-//       .then(response => {
-//         setCurrentExcursion(response.data.data);
-//         currentExcursionData = response.data.data;
-//         setUserData({ ...userData, isAuthenticated: true });
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       });
-//   };
+  //   const addItemToExcursion = id => {
+  //     let currentExcursionData = userData.excursions.reduce(
+  //       (excursionObject, excursion) =>
+  //         excursion._id === excursionId
+  //           ? (excursionObject = { ...excursion })
+  //           : excursionObject,
+  //       {}
+  //     );
+  //     currentExcursionData.items.push(id);
+  //     const itemObj = { items: currentExcursionData.items };
+  //     API.updateExcursionInventory(
+  //       currentExcursionData._id,
+  //       itemObj,
+  //       authConfig(userToken)
+  //     )
+  //       .then(response => {
+  //         setCurrentExcursion(response.data.data);
+  //         currentExcursionData = response.data.data;
+  //         setUserData({ ...userData, isAuthenticated: true });
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //       });
+  //   };
 
   return (
     <div>
@@ -76,14 +79,14 @@ const Excursion: React.FC = (): JSX.Element => {
                 Inventory
               </Typography>
               <Divider className={classes.list} variant='middle' />
-
-              {/* <ExcursionInventoryListAdd
-                addToExcursion={addToExcursion}
-              ></ExcursionInventoryListAdd> */}
+              <AddToExcursionList
+                // addItemToExcursion={addItemToExcursion}
+              ></AddToExcursionList>
             </Grid>
             <Grid className={classes.list} item xs={12} sm={6}>
               <Typography className={classes.title} variant='h5'>
-                Inventory for {user && currentExcursion !== null && currentExcursion.name}
+                Inventory for{' '}
+                {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
               {/* {currentExcursion.items &&
@@ -98,7 +101,8 @@ const Excursion: React.FC = (): JSX.Element => {
                   ))} */}
 
               <Typography className={classes.title} variant='h5'>
-                Wishlist for {user && currentExcursion !== null && currentExcursion.name}
+                Wishlist for{' '}
+                {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
               {/* {currentExcursion.items &&

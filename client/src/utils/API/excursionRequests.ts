@@ -8,5 +8,5 @@ export const excursionRequests = {
   deleteExcursion: (id: string) => axios.delete(`/api/excursion/${id}`),
 
   addItemToExcursion: (id: string, item: InventoryItem) =>
-    axios.put('/api/excursion/${id}', item),
+    axios.put(`/api/excursion/${id}`, item),
 };

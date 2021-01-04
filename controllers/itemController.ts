@@ -13,7 +13,12 @@ router.post('/', checkToken, async (req: any, res) => {
 
     const user = await db.User.findOne({ _id: userId })
       .populate('items')
-      .populate('excursions');
+      .populate({
+        path: 'excursions',
+        populate: {
+          path: 'items',
+        },
+      });
     if (!user) throw new Error('Unable to create new item.');
 
     const newItem = new db.Item({ name, status });
@@ -46,7 +51,12 @@ router.put('/:id', checkToken, async (req: any, res) => {
 
     const user = await db.User.findOne({ _id: userId })
       .populate('items')
-      .populate('excursions');
+      .populate({
+        path: 'excursions',
+        populate: {
+          path: 'items',
+        },
+      });
     if (!user) throw new Error('Unable to update item.');
 
     res.status(200).json({ user, message: 'Item was updated!' });
@@ -66,7 +76,12 @@ router.delete('/:id', checkToken, async (req: any, res) => {
   try {
     const user = await db.User.findOne({ _id: userId })
       .populate('items')
-      .populate('excursions');
+      .populate({
+        path: 'excursions',
+        populate: {
+          path: 'items',
+        },
+      });
     if (!user) throw new Error('Unable to delete item.');
 
     const indexToRemove: number = user.items.map(item => item._id).indexOf(id);
