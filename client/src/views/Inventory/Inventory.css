@@ -1,4 +1,22 @@
+.inventoryContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.inventoryBox {
+  width: 100%;
+  margin: 10px 0 0 3vw;
+}
+
 .addItemForm {
   display: flex;
   justify-content: space-around;
+  box-shadow: 10px 10px 5px grey;
+  border: solid #13160e 3px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.inventoryListTitle {
+  text-align: center;
 }

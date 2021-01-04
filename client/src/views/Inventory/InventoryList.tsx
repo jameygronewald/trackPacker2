@@ -15,6 +15,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import './Inventory.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,7 +55,10 @@ const InventoryList: React.FC<InventoryListProps> = (
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={5}>
-          <Typography variant='h6' className={classes.title}>
+          <Typography
+            variant='h6'
+            className={`inventoryListTitle ${classes.title}`}
+          >
             Inventory
           </Typography>
           <div className={classes.demo}>
@@ -96,7 +100,10 @@ const InventoryList: React.FC<InventoryListProps> = (
         </Grid>
         <Grid item xs={12} sm={2}></Grid>
         <Grid item xs={12} sm={5}>
-          <Typography variant='h6' className={classes.title}>
+          <Typography
+            variant='h6'
+            className={`inventoryListTitle ${classes.title}`}
+          >
             Wishlist
           </Typography>
           <div className={classes.demo}>

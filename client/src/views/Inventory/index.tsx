@@ -77,32 +77,19 @@ const Inventory = (props: Props) => {
         <Grid item xs={12} sm={2}>
           <Dashboard />
         </Grid>
-        <Grid
-          className='inventoryContainer'
-          style={{ marginLeft: '3vw' }}
-          item
-          xs={12}
-          sm={9}
-        >
-          <Box
-            style={{
-              marginTop: '10px',
-            }}
-          >
+        <Grid className='inventoryContainer' item xs={12} sm={9}>
+          <Box className='inventoryBox'>
             <form
               className='addItemForm'
               onSubmit={handleSubmit}
               style={{
-                boxShadow: '10px 10px 5px grey',
-                borderStyle: 'solid',
-                borderColor: '#13160e',
+                
               }}
             >
               <TextField
                 id='standard-basic'
                 label='Add New Item'
                 name='newItem'
-                // ref='textEl'
                 inputRef={textInput}
                 type='text'
                 placeholder='Enter Item Name'
