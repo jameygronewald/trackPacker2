@@ -1,5 +1,5 @@
-import * as express from 'express';
-import checkToken from '../middleware/checkToken';
+const express = require('express');
+const checkToken = require('../middleware/checkToken');
 const router = express.Router();
 import createToken from '../utils/createToken';
 import db from '../models';
