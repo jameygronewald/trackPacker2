@@ -11,7 +11,9 @@ router.post('/', checkToken, async (req: any, res) => {
   try {
     if (!name || !status) throw new Error('Unable to create new item.');
 
-    const user = await db.User.findOne({ _id: userId }).populate('items');
+    const user = await db.User.findOne({ _id: userId })
+      .populate('items')
+      .populate('excursions');
     if (!user) throw new Error('Unable to create new item.');
 
     const newItem = new db.Item({ name, status });
@@ -33,7 +35,7 @@ router.post('/', checkToken, async (req: any, res) => {
 router.put('/:id', checkToken, async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
-  
+
   try {
     const itemToUpdate = await db.Item.findOne({ _id: id });
     let { status } = itemToUpdate;
@@ -42,7 +44,9 @@ router.put('/:id', checkToken, async (req: any, res) => {
 
     await itemToUpdate.save();
 
-    const user = await db.User.findOne({ _id: userId }).populate('items');
+    const user = await db.User.findOne({ _id: userId })
+      .populate('items')
+      .populate('excursions');
     if (!user) throw new Error('Unable to update item.');
 
     res.status(200).json({ user, message: 'Item was updated!' });
@@ -58,11 +62,13 @@ router.put('/:id', checkToken, async (req: any, res) => {
 router.delete('/:id', checkToken, async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
-  
+
   try {
-    const user = await db.User.findOne({ _id: userId }).populate('items');
+    const user = await db.User.findOne({ _id: userId })
+      .populate('items')
+      .populate('excursions');
     if (!user) throw new Error('Unable to delete item.');
-  
+
     const indexToRemove: number = user.items.map(item => item._id).indexOf(id);
 
     user.items.splice(indexToRemove, 1);
