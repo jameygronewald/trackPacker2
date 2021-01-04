@@ -10,3 +10,9 @@ export interface Excursion {
 export interface NewExcursion {
   name: string;
 }
+
+export interface ExcursionCardProps {
+  excursionId: string;
+  excursionName: string;
+  deleteExcursion: (id: string) => Promise<void>;
+}

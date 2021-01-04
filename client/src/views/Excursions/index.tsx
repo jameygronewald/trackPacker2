@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef } from 'react';
-// import ExcursionCard from '../../components/ExcursionCard/ExcursionCard';
 import Dashboard from '../../components/Dashboard';
+import ExcursionCard from './ExcursionCard';
 import { excursionRequests } from '../../utils/API/excursionRequests';
 import { UserContext } from '../../context/UserContext';
 import { Excursion, NewExcursion } from './interfaces';
@@ -16,11 +16,10 @@ const Excursions: React.FC = (): JSX.Element => {
 
   const textInput = useRef<any>(null);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  // ADD AN EXCUSION
+  const addExcursion = async (excursion: NewExcursion) => {
     try {
-      const response = await excursionRequests.addExcursion(newExcursion);
-      console.log(response.data)
+      const response = await excursionRequests.addExcursion(excursion);
       setUserState({ ...userState, user: response.data });
       setNewExcursion({ name: '' });
     } catch (error) {
@@ -28,15 +27,15 @@ const Excursions: React.FC = (): JSX.Element => {
     }
   };
 
-  //   const deleteExcursion = id => {
-  //     API.deleteExcursion(id, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   };
+  // DELETE AN EXCURSION
+  const deleteExcursion = async (id: string) => {
+    try {
+      const response = await excursionRequests.deleteExcursion(id);
+      setUserState({ user: response.data.user, isAuthenticated: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -53,7 +52,12 @@ const Excursions: React.FC = (): JSX.Element => {
             p={2}
             mx='auto'
           >
-            <form onSubmit={handleSubmit}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                addExcursion(newExcursion);
+              }}
+            >
               <TextField
                 size='small'
                 name='newExcursion'
@@ -79,12 +83,12 @@ const Excursions: React.FC = (): JSX.Element => {
             user.excursions.map((excursion: Excursion) => (
               <Grid item xs={12} sm={12} key={excursion._id}>
                 <Box display='flex' p={1} mx='auto'>
-                  {/* <ExcursionCard
-                    randomImg='https://source.unsplash.com/1600x900/?nature,Utah'
+                  <ExcursionCard
+                    // randomImg='https://source.unsplash.com/1600x900/?nature,Utah'
                     excursionId={excursion._id}
                     excursionName={excursion.name}
                     deleteExcursion={deleteExcursion}
-                  /> */}
+                  />
                 </Box>
               </Grid>
             ))}

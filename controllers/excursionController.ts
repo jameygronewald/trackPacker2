@@ -32,4 +32,33 @@ router.post('/', checkToken, async (req: any, res) => {
   }
 });
 
+// DELETE AN EXCURSION
+router.delete('/:id', checkToken, async (req: any, res) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    if (!id) throw new Error('Unable to delete excursion.');
+
+    const user = await db.User.findOne({ _id: userId })
+      .populate('items')
+      .populate('excursions');
+    if (!user) throw new Error('Unable to delete excursion.');
+
+    const indexToRemove: number = user.excursions.map(excursion => excursion._id).indexOf(id);
+
+    user.excursions.splice(indexToRemove, 1);
+    await user.save();
+
+    await db.Excursion.findByIdAndDelete(id);
+
+    res.status(200).json({ user, message: 'Successfully deleted excursion.' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      message: 'Server error.',
+    });
+  }
+});
+
 module.exports = router;
