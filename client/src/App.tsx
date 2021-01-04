@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import LandingPage from './views/LandingPage';
 import Register from './views/Register';
 import Inventory from './views/Inventory';
+import Excursions from './views/Excursions';
 import { UserContext } from './context/UserContext';
 import setAuthToken from './utils/setAuthTokenToHeaders';
 import { userRequests } from './utils/API/userRequests';
@@ -45,6 +46,7 @@ const App = () => {
             <Route exact path='/' component={LandingPage} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/inventory' component={Inventory} />
+            <Route exact path='/excursions' component={Excursions} />
           </Switch>
         </UserContext.Provider>
       </Router>
