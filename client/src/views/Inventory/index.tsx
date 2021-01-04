@@ -105,7 +105,7 @@ const Inventory = (props: Props) => {
                 // ref='textEl'
                 inputRef={textInput}
                 type='text'
-                placeholder='Add an Item'
+                placeholder='Enter Item Name'
                 onChange={e => setNewItem({ ...newItem, name: e.target.value })}
                 style={{ color: '#13160e', borderColor: '#13160e' }}
               />
@@ -139,7 +139,8 @@ const Inventory = (props: Props) => {
                 style={{ color: '#13160e', borderColor: '#13160e' }}
                 className={classes.margin}
               >
-                Add to {'Inventory'}
+                Add to{' '}
+                {newItem.status === 'Inventory' ? 'Inventory' : 'Wishlist'}
               </Button>
             </form>
             <InventoryList updateItem={updateItem} deleteItem={deleteItem} />
