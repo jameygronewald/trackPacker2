@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 // const connect = require('./config/db');
-const authController = require('../controllers/authController');
 
 const app = express();
 
@@ -36,10 +35,10 @@ app.use(express.json());
 app.use(cors());
 
 // Route imports
-app.use('/api/auth', authController);
-app.use('/api/user', require('../controllers/userController'));
-app.use('/api/item', require('../controllers/itemController'));
-app.use('/api/excursion', require('../controllers/excursionController'));
+app.use('/api/auth', require('./controllers/authController'));
+app.use('/api/user', require('./controllers/userController'));
+app.use('/api/item', require('./controllers/itemController'));
+app.use('/api/excursion', require('./controllers/excursionController'));
 
 // Check for production environment and serve static client build
 if (process.env.NODE_ENV === 'production') {

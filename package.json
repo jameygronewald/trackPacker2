@@ -2,10 +2,10 @@
   "name": "trackpacker2",
   "version": "1.0.0",
   "description": "Refactor of the TrackPacker app",
-  "main": "./server/index.ts",
+  "main": "server.ts",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:prod": "node ./server/index.ts",
+    "start:prod": "node server.ts",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
     "seed": "node scripts/seedDB.js",
