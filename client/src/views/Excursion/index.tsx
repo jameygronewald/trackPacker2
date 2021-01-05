@@ -34,7 +34,10 @@ const Excursion: React.FC = (): JSX.Element => {
       (excursion: IExcursion) => excursion._id === excursionId
     );
 
-  const addItemToExcursion = async (id: string, item: InventoryItem): Promise<void> => {
+  const addItemToExcursion = async (
+    id: string,
+    item: InventoryItem
+  ): Promise<void> => {
     try {
       const response = await excursionRequests.addItemToExcursion(id, item);
       setUserState({ user: response.data.user, isAuthenticated: true });
@@ -43,13 +46,20 @@ const Excursion: React.FC = (): JSX.Element => {
     }
   };
 
-  const deleteItemFromExcursion = async (id: string, item: InventoryItem): Promise<void> => {
-      try {
-          console.log(id, item);
-      } catch (error) {
-          console.log(error);
-      }
-  }
+  const deleteItemFromExcursion = async (
+    id: string,
+    item: InventoryItem
+  ): Promise<void> => {
+    try {
+      const response = await excursionRequests.deleteItemFromExcursion(
+        id,
+        item
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>

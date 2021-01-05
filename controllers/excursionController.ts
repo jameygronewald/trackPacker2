@@ -75,7 +75,7 @@ router.delete('/:id', checkToken, async (req: any, res) => {
 });
 
 // ADD ITEM TO EXCURSION
-router.put('/:id', checkToken, async (req: any, res) => {
+router.put('/add/:id', checkToken, async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
   const item: InventoryItem = req.body;
@@ -84,8 +84,10 @@ router.put('/:id', checkToken, async (req: any, res) => {
     if (!id) throw new Error('Unable to add item to excursion.');
 
     const excursionToUpdate = await db.Excursion.findById(id).populate('items');
-    const duplicate = excursionToUpdate.items.find((excursionItem: InventoryItem) => excursionItem._id == item._id);
-    
+    const duplicate = excursionToUpdate.items.find(
+      (excursionItem: InventoryItem) => excursionItem._id == item._id
+    );
+
     if (duplicate) throw new Error('Item is already on this excursion.');
 
     excursionToUpdate.items.push(item);
@@ -105,6 +107,47 @@ router.put('/:id', checkToken, async (req: any, res) => {
     res
       .status(200)
       .json({ user, message: 'Successfully added item to excursion.' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      message: 'Server error.',
+    });
+  }
+});
+
+// DELETE AN ITEM FROM AN EXCURSION
+router.put('/delete/:id', checkToken, async (req: any, res) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+  const item: InventoryItem = req.body;
+
+  try {
+    if (!id) throw new Error('Unable to delete item from excursion.');
+
+    const excursionToUpdate = await db.Excursion.findById(id).populate('items');
+
+    const indexToRemove = excursionToUpdate.items
+      .map((excursionItem: InventoryItem) => excursionItem._id)
+      .indexOf(item._id);
+    if (indexToRemove === -1) throw new Error('Could not find item to delete.');
+
+    excursionToUpdate.items.splice(indexToRemove, 1);
+
+    await excursionToUpdate.save();
+
+    const user = await db.User.findOne({ _id: userId })
+      .populate('items')
+      .populate({
+        path: 'excursions',
+        populate: {
+          path: 'items',
+        },
+      });
+    if (!user) throw new Error('Unable to delete item from excursion.');
+
+    res
+      .status(200)
+      .json({ user, message: 'Successfully deleted item from excursion.' });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({

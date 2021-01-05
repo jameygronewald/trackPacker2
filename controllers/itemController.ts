@@ -2,6 +2,7 @@ import * as express from 'express';
 const router = express.Router();
 import checkToken from '../middleware/checkToken';
 import db from '../models';
+import { InventoryItem } from '../utils/interfaces';
 
 // ADD NEW ITEM TO INVENTORY
 router.post('/', checkToken, async (req: any, res) => {
@@ -22,7 +23,7 @@ router.post('/', checkToken, async (req: any, res) => {
     if (!user) throw new Error('Unable to create new item.');
 
     const newItem = new db.Item({ name, status });
-    const item = await newItem.save();
+    const item: InventoryItem = await newItem.save();
 
     user.items.push(item);
     await user.save();
@@ -84,7 +85,7 @@ router.delete('/:id', checkToken, async (req: any, res) => {
       });
     if (!user) throw new Error('Unable to delete item.');
 
-    const indexToRemove: number = user.items.map(item => item._id).indexOf(id);
+    const indexToRemove: number = user.items.map((item: InventoryItem) => item._id).indexOf(id);
 
     user.items.splice(indexToRemove, 1);
 
