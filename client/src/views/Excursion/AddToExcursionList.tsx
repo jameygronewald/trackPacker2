@@ -16,6 +16,7 @@ import {
   Slide,
   makeStyles,
 } from '@material-ui/core';
+import './Excursion.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AddToExcursionList: React.FC<AddToExcursionListProps> = (props: AddToExcursionListProps): JSX.Element => {
+const AddToExcursionList: React.FC<AddToExcursionListProps> = (
+  props: AddToExcursionListProps
+): JSX.Element => {
   const classes = useStyles();
 
   const { excursionId, addItemToExcursion } = props;
@@ -44,7 +47,7 @@ const AddToExcursionList: React.FC<AddToExcursionListProps> = (props: AddToExcur
         <Grid item xs={12} sm={6}>
           <div className={classes.demo}>
             <List>
-              {user && user.items.length > 0 ?
+              {user && user.items.length > 0 ? (
                 user.items.map((item: InventoryItem) => (
                   <div key={item._id}>
                     <Slide
@@ -55,28 +58,27 @@ const AddToExcursionList: React.FC<AddToExcursionListProps> = (props: AddToExcur
                     >
                       <ListItem>
                         <ListItemText primary={item.name} />
-                        <ListItemSecondaryAction>
+                        <ListItemSecondaryAction className='excursionIconsContainer'>
+                          {item.status === 'Wishlist' && (
+                            <FavoriteIcon className='excursionHeart'></FavoriteIcon>
+                          )}
                           <IconButton
                             edge='end'
-                            aria-label='delete'
+                            aria-label='add'
                             onClick={() => {
                               addItemToExcursion(excursionId, item);
                             }}
                           >
-                            {item.status === 'Wishlist' && (
-                              <FavoriteIcon
-                                style={{ paddingRight: '10px' }}
-                              ></FavoriteIcon>
-                            )}
                             <AddBoxIcon />
                           </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>
                     </Slide>
                   </div>
-                )) : (
-                    <Typography>Your inventory is empty!</Typography>
-                  )}
+                ))
+              ) : (
+                <Typography>Your inventory is empty!</Typography>
+              )}
             </List>
           </div>
         </Grid>

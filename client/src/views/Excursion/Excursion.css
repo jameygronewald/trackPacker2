@@ -1,0 +1,8 @@
+.excursionIconsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.excursionHeart path {
+  color: rgb(131, 45, 51);
+}
