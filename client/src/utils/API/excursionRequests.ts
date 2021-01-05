@@ -9,4 +9,7 @@ export const excursionRequests = {
 
   addItemToExcursion: (id: string, item: InventoryItem) =>
     axios.put(`/api/excursion/${id}`, item),
+
+  deleteItemFromExcursion: (id: string, item: InventoryItem) =>
+    axios.put(`/api/excursion/${id}`, item),
 };

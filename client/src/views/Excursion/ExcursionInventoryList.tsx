@@ -1,13 +1,17 @@
 import React from 'react';
+import { ExcursionInventoryListProps } from './interfaces';
+
 import {
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  IconButton,
   Grid,
   Slide,
   makeStyles,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,10 +26,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ExcursionInventoryList: React.FC<any> = (props: any): JSX.Element => {
+const ExcursionInventoryList: React.FC<ExcursionInventoryListProps> = (props: ExcursionInventoryListProps): JSX.Element => {
   const classes = useStyles();
 
-  const { item } = props;
+  const { excursionId, item, deleteItemFromExcursion } = props;
 
   return (
     <div className={classes.root}>
@@ -37,15 +41,15 @@ const ExcursionInventoryList: React.FC<any> = (props: any): JSX.Element => {
                 <ListItem>
                   <ListItemText primary={item.name} />
                   <ListItemSecondaryAction>
-                    {/* <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => {
-                        deleteFromExcursion(itemId);
-                      }}
+                    <IconButton
+                      edge='end'
+                      aria-label='delete'
+                        onClick={() => {
+                          deleteItemFromExcursion(excursionId, item);
+                        }}
                     >
                       <DeleteIcon />
-                    </IconButton> */}
+                    </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
               </Slide>

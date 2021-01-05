@@ -34,7 +34,7 @@ const Excursion: React.FC = (): JSX.Element => {
       (excursion: IExcursion) => excursion._id === excursionId
     );
 
-  const addItemToExcursion = async (id: string, item: InventoryItem) => {
+  const addItemToExcursion = async (id: string, item: InventoryItem): Promise<void> => {
     try {
       const response = await excursionRequests.addItemToExcursion(id, item);
       setUserState({ user: response.data.user, isAuthenticated: true });
@@ -42,6 +42,14 @@ const Excursion: React.FC = (): JSX.Element => {
       console.log(error);
     }
   };
+
+  const deleteItemFromExcursion = async (id: string, item: InventoryItem): Promise<void> => {
+      try {
+          console.log(id, item);
+      } catch (error) {
+          console.log(error);
+      }
+  }
 
   return (
     <div>
@@ -81,7 +89,9 @@ const Excursion: React.FC = (): JSX.Element => {
                   .map((item: InventoryItem, index: number) => (
                     <ExcursionInventoryList
                       key={index}
+                      excursionId={excursionId}
                       item={item}
+                      deleteItemFromExcursion={deleteItemFromExcursion}
                     ></ExcursionInventoryList>
                   ))}
               <Typography className={classes.title} variant='h5'>
@@ -96,7 +106,9 @@ const Excursion: React.FC = (): JSX.Element => {
                   .map((item: InventoryItem, index: number) => (
                     <ExcursionInventoryList
                       key={index}
+                      excursionId={excursionId}
                       item={item}
+                      deleteItemFromExcursion={deleteItemFromExcursion}
                     ></ExcursionInventoryList>
                   ))}
             </Grid>
