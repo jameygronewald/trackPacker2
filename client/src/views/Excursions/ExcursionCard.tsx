@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
 import { ExcursionCardProps } from './interfaces';
 
 import {
@@ -39,8 +38,6 @@ const ExcursionCard: React.FC<ExcursionCardProps> = (
 ): JSX.Element => {
   const classes = useStyles();
 
-  const { user } = useContext(UserContext);
-
   const { excursionId, excursionName, deleteExcursion } = props;
 
   return (
@@ -57,7 +54,7 @@ const ExcursionCard: React.FC<ExcursionCardProps> = (
               variant='h3'
               color='textSecondary'
             >
-              {user.firstName}'s {excursionName} Excursion
+              {excursionName}
             </Typography>
             <Divider className={classes.title} variant='middle' />
           </CardContent>
