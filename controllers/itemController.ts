@@ -75,6 +75,23 @@ router.delete('/:id', checkToken, async (req: any, res) => {
   const { id: userId } = req.user;
 
   try {
+    const userToUpdate = await db.User.findOne({ _id: userId }).populate(
+      'items'
+    );
+    if (!userToUpdate) throw new Error('Unable to delete item.');
+
+    const indexToRemove: number = userToUpdate.items
+      .map((item: InventoryItem) => item._id)
+      .indexOf(id);
+
+    userToUpdate.items.splice(indexToRemove, 1);
+
+    await userToUpdate.save();
+
+    const itemToDelete = await db.Item.findById(id);
+
+    await itemToDelete.deleteOne();
+
     const user = await db.User.findOne({ _id: userId })
       .populate('items')
       .populate({
@@ -83,15 +100,6 @@ router.delete('/:id', checkToken, async (req: any, res) => {
           path: 'items',
         },
       });
-    if (!user) throw new Error('Unable to delete item.');
-
-    const indexToRemove: number = user.items.map((item: InventoryItem) => item._id).indexOf(id);
-
-    user.items.splice(indexToRemove, 1);
-
-    await user.save();
-
-    await db.Item.findById(id);
 
     res.status(200).json({ user, message: 'Item was removed from inventory.' });
   } catch (error) {
