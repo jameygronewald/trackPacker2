@@ -3,3 +3,10 @@ export interface Payload {
     id: string;
   };
 }
+
+export interface InventoryItem {
+  _id: string;
+  name: string;
+  status: string;
+  __v: number;
+}

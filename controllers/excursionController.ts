@@ -2,6 +2,7 @@ import * as express from 'express';
 const router = express.Router();
 import db from '../models';
 import checkToken from '../middleware/checkToken';
+import { InventoryItem } from '../utils/interfaces';
 
 // ADD AN EXCURSION
 router.post('/', checkToken, async (req: any, res) => {
@@ -77,12 +78,16 @@ router.delete('/:id', checkToken, async (req: any, res) => {
 router.put('/:id', checkToken, async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
-  const item: {} = req.body;
+  const item: InventoryItem = req.body;
 
   try {
     if (!id) throw new Error('Unable to add item to excursion.');
 
     const excursionToUpdate = await db.Excursion.findById(id).populate('items');
+    const duplicate = excursionToUpdate.items.find((excursionItem: InventoryItem) => excursionItem._id == item._id);
+    
+    if (duplicate) throw new Error('Item is already on this excursion.');
+
     excursionToUpdate.items.push(item);
 
     await excursionToUpdate.save();

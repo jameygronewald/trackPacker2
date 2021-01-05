@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { InventoryItem } from '../Inventory/interfaces';
+import { AddToExcursionListProps } from './interfaces';
 
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -30,8 +31,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AddToExcursionList: React.FC = (props: any): JSX.Element => {
+const AddToExcursionList: React.FC<AddToExcursionListProps> = (props: AddToExcursionListProps): JSX.Element => {
   const classes = useStyles();
+
+  const { excursionId, addItemToExcursion } = props;
 
   const { user } = useContext(UserContext);
 
@@ -57,7 +60,7 @@ const AddToExcursionList: React.FC = (props: any): JSX.Element => {
                             edge='end'
                             aria-label='delete'
                             onClick={() => {
-                              props.addToExcursion(item);
+                              addItemToExcursion(excursionId, item);
                             }}
                           >
                             {item.status === 'Wishlist' && (

@@ -3,11 +3,11 @@ import { excursionRequests } from '../../utils/API/excursionRequests';
 import { useParams } from 'react-router-dom';
 import Dashboard from '../../components/Dashboard';
 import AddToExcursionList from './AddToExcursionList';
-// import ExcursionInventoryList from '../../components/ExcursionInventoryList/ExcursionInventoryList';
-// import ExcursionInventoryWishList from '../../components/ExcursionInventoryWishList/ExcursionInventoryWishList';
+import ExcursionInventoryList from './ExcursionInventoryList';
 import { UserContext } from '../../context/UserContext';
 import { IExcursion } from '../Excursions/interfaces';
 import { ExcursionQueryParams } from './interfaces';
+import { InventoryItem } from '../Inventory/interfaces';
 
 import { Typography, Grid, Box, Divider, makeStyles } from '@material-ui/core';
 
@@ -34,30 +34,14 @@ const Excursion: React.FC = (): JSX.Element => {
       (excursion: IExcursion) => excursion._id === excursionId
     );
 
-  //   const addItemToExcursion = id => {
-  //     let currentExcursionData = userData.excursions.reduce(
-  //       (excursionObject, excursion) =>
-  //         excursion._id === excursionId
-  //           ? (excursionObject = { ...excursion })
-  //           : excursionObject,
-  //       {}
-  //     );
-  //     currentExcursionData.items.push(id);
-  //     const itemObj = { items: currentExcursionData.items };
-  //     API.updateExcursionInventory(
-  //       currentExcursionData._id,
-  //       itemObj,
-  //       authConfig(userToken)
-  //     )
-  //       .then(response => {
-  //         setCurrentExcursion(response.data.data);
-  //         currentExcursionData = response.data.data;
-  //         setUserData({ ...userData, isAuthenticated: true });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   };
+  const addItemToExcursion = async (id: string, item: InventoryItem) => {
+    try {
+      const response = await excursionRequests.addItemToExcursion(id, item);
+      setUserState({ user: response.data.user, isAuthenticated: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -80,7 +64,8 @@ const Excursion: React.FC = (): JSX.Element => {
               </Typography>
               <Divider className={classes.list} variant='middle' />
               <AddToExcursionList
-                // addItemToExcursion={addItemToExcursion}
+                excursionId={excursionId}
+                addItemToExcursion={addItemToExcursion}
               ></AddToExcursionList>
             </Grid>
             <Grid className={classes.list} item xs={12} sm={6}>
@@ -89,32 +74,31 @@ const Excursion: React.FC = (): JSX.Element => {
                 {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
-              {/* {currentExcursion.items &&
+              {currentExcursion &&
+                currentExcursion.items &&
                 currentExcursion.items
-                  .filter(item => item.status === 'Inventory')
-                  .map((item, index) => (
+                  .filter((item: InventoryItem) => item.status === 'Inventory')
+                  .map((item: InventoryItem, index: number) => (
                     <ExcursionInventoryList
                       key={index}
-                      itemName={item.name}
-                      itemId={item._id}
+                      item={item}
                     ></ExcursionInventoryList>
-                  ))} */}
-
+                  ))}
               <Typography className={classes.title} variant='h5'>
                 Wishlist for{' '}
                 {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
-              {/* {currentExcursion.items &&
+              {currentExcursion &&
+                currentExcursion.items &&
                 currentExcursion.items
-                  .filter(item => item.status === 'Wishlist')
-                  .map((item, index) => (
-                    <ExcursionInventoryWishList
+                  .filter((item: InventoryItem) => item.status === 'Wishlist')
+                  .map((item: InventoryItem, index: number) => (
+                    <ExcursionInventoryList
                       key={index}
-                      itemName={item.name}
-                      itemId={item._id}
-                    ></ExcursionInventoryWishList>
-                  ))} */}
+                      item={item}
+                    ></ExcursionInventoryList>
+                  ))}
             </Grid>
           </Grid>
         </Grid>
