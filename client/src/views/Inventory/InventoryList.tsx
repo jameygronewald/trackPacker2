@@ -140,7 +140,7 @@ const InventoryList: React.FC<InventoryListProps> = (
                   </div>
                 ))
               ) : (
-                <Typography>Add items to your wishlist!</Typography>
+                <Typography className='emptyMessage'>Add items to your wishlist!</Typography>
               )}
             </List>
           </div>

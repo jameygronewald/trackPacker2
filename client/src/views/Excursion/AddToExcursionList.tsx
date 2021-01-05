@@ -77,7 +77,7 @@ const AddToExcursionList: React.FC<AddToExcursionListProps> = (
                   </div>
                 ))
               ) : (
-                <Typography>Your inventory is empty!</Typography>
+                <Typography className='emptyMessage'>Your inventory is empty!</Typography>
               )}
             </List>
           </div>

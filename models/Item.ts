@@ -15,6 +15,14 @@ const ItemSchema = new Schema({
   },
 });
 
+ItemSchema.pre('deleteOne', async function (this: mongoose.Document) {
+  try {
+    await this.model('Excursion').deleteOne({ item_ids: this._id });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const Item = mongoose.model('Item', ItemSchema);
 
 module.exports = Item;

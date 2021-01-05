@@ -49,6 +49,18 @@ const Excursion: React.FC = (): JSX.Element => {
       (excursion: IExcursion) => excursion._id === excursionId
     );
 
+  let inventoryItems: InventoryItem[] | null = null;
+  if (currentExcursion)
+    inventoryItems = currentExcursion.items.filter(
+      (item: InventoryItem) => item.status === 'Inventory'
+    );
+
+  let wishlistItems: InventoryItem[] | null = null;
+  if (currentExcursion)
+    wishlistItems = currentExcursion.items.filter(
+      (item: InventoryItem) => item.status === 'Wishlist'
+    );
+
   const addItemToExcursion = async (
     id: string,
     item: InventoryItem
@@ -113,13 +125,10 @@ const Excursion: React.FC = (): JSX.Element => {
                     <div className={classes.demo}>
                       <List>
                         {currentExcursion &&
-                        currentExcursion.items.length > 0 ? (
-                          currentExcursion.items
-                            .filter(
-                              (item: InventoryItem) =>
-                                item.status === 'Inventory'
-                            )
-                            .map((item: InventoryItem, index: number) => (
+                        inventoryItems &&
+                        inventoryItems.length > 0 ? (
+                          inventoryItems.map(
+                            (item: InventoryItem, index: number) => (
                               <ExcursionInventoryList
                                 key={index}
                                 excursionId={excursionId}
@@ -128,7 +137,8 @@ const Excursion: React.FC = (): JSX.Element => {
                                   deleteItemFromExcursion
                                 }
                               ></ExcursionInventoryList>
-                            ))
+                            )
+                          )
                         ) : (
                           <Typography className='emptyMessage'>
                             No items currently in{' '}
@@ -152,13 +162,10 @@ const Excursion: React.FC = (): JSX.Element => {
                     <div className={classes.demo}>
                       <List>
                         {currentExcursion &&
-                        currentExcursion.items.length > 0 ? (
-                          currentExcursion.items
-                            .filter(
-                              (item: InventoryItem) =>
-                                item.status === 'Wishlist'
-                            )
-                            .map((item: InventoryItem, index: number) => (
+                        wishlistItems &&
+                        wishlistItems.length > 0 ? (
+                          wishlistItems.map(
+                            (item: InventoryItem, index: number) => (
                               <ExcursionInventoryList
                                 key={index}
                                 excursionId={excursionId}
@@ -167,7 +174,8 @@ const Excursion: React.FC = (): JSX.Element => {
                                   deleteItemFromExcursion
                                 }
                               ></ExcursionInventoryList>
-                            ))
+                            )
+                          )
                         ) : (
                           <Typography className='emptyMessage'>
                             No items currently in{' '}
