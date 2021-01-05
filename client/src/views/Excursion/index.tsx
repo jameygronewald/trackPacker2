@@ -55,7 +55,7 @@ const Excursion: React.FC = (): JSX.Element => {
         id,
         item
       );
-      console.log(response.data);
+      setUserState({ user: response.data.user, isAuthenticated: true });
     } catch (error) {
       console.log(error);
     }
