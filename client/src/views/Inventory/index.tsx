@@ -36,7 +36,7 @@ const Inventory = (props: Props) => {
     status: 'Inventory',
   });
 
-  const { setUserState, userState } = useContext(UserContext);
+  const { setUserState } = useContext(UserContext);
 
   const textInput = useRef<any>(null);
 
@@ -45,7 +45,7 @@ const Inventory = (props: Props) => {
     event.preventDefault();
     try {
       const response = await itemRequests.addItemToInventory(newItem);
-      setUserState({ ...userState, user: response.data });
+      setUserState({ user: response.data, isAuthenticated: true });
       setNewItem({ ...newItem, name: '' });
     } catch (error) {
       console.log(error);
@@ -55,7 +55,7 @@ const Inventory = (props: Props) => {
   const updateItem = async (itemId: string) => {
     try {
       const response = await itemRequests.updateItemStatus(itemId);
-      setUserState({ ...userState, user: response.data.user });
+      setUserState({ user: response.data.user, isAuthenticated: true });
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +64,7 @@ const Inventory = (props: Props) => {
   const deleteItem = async (itemId: string) => {
     try {
       const response = await itemRequests.deleteItemFromInventory(itemId);
-      setUserState({ ...userState, user: response.data.user });
+      setUserState({ user: response.data.user, isAuthenticated: true });
     } catch (error) {
       console.log(error);
     }

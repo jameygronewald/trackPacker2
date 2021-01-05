@@ -1,37 +1,41 @@
 import React, { useState, useContext, useRef } from 'react';
-// import ExcursionCard from '../../components/ExcursionCard/ExcursionCard';
 import Dashboard from '../../components/Dashboard';
+import ExcursionCard from './ExcursionCard';
+import { excursionRequests } from '../../utils/API/excursionRequests';
 import { UserContext } from '../../context/UserContext';
+import { IExcursion, NewExcursion } from './interfaces';
 
 import { TextField, Grid, Button, Box, Divider } from '@material-ui/core';
 
 const Excursions: React.FC = (): JSX.Element => {
-  const [newExcursion, setNewExcursion] = useState<string>('');
+  const [newExcursion, setNewExcursion] = useState<NewExcursion>({
+    name: '',
+  });
 
   const { user, setUserState } = useContext(UserContext);
 
   const textInput = useRef<any>(null);
 
-    const handleSubmit = (e: any) => {
-      e.preventDefault();
-  //     const excursionObj = { name: newExcursion };
-  //     API.addExcursion(excursionObj, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //         setNewExcursion({ name: '' });
-  //       })
-  //       .catch(err => console.log(err));
-    };
+  // ADD AN EXCUSION
+  const addExcursion = async (excursion: NewExcursion) => {
+    try {
+      const response = await excursionRequests.addExcursion(excursion);
+      setUserState({ user: response.data, isAuthenticated: true });
+      setNewExcursion({ name: '' });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   const deleteExcursion = id => {
-  //     API.deleteExcursion(id, authConfig(userToken))
-  //       .then(response => {
-  //         setUserData({ ...response.data.data, isAuthenticated: true });
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   };
+  // DELETE AN EXCURSION
+  const deleteExcursion = async (id: string) => {
+    try {
+      const response = await excursionRequests.deleteExcursion(id);
+      setUserState({ user: response.data.user, isAuthenticated: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -48,13 +52,18 @@ const Excursions: React.FC = (): JSX.Element => {
             p={2}
             mx='auto'
           >
-            <form onSubmit={handleSubmit}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                addExcursion(newExcursion);
+              }}
+            >
               <TextField
                 size='small'
                 name='newExcursion'
                 inputRef={textInput}
                 placeholder='Add an Excursion'
-                onChange={e => setNewExcursion(e.target.value)}
+                onChange={e => setNewExcursion({ name: e.target.value })}
               ></TextField>
               <Button
                 type='submit'
@@ -69,16 +78,17 @@ const Excursions: React.FC = (): JSX.Element => {
             </form>
           </Box>
           <Divider variant='middle' />
-          {user.excursions &&
-            user.excursions.map((excursion:any) => (
+          {user &&
+            user.excursions.length > 0 &&
+            user.excursions.map((excursion: IExcursion) => (
               <Grid item xs={12} sm={12} key={excursion._id}>
                 <Box display='flex' p={1} mx='auto'>
-                  {/* <ExcursionCard
-                    randomImg='https://source.unsplash.com/1600x900/?nature,Utah'
+                  <ExcursionCard
+                    // randomImg='https://source.unsplash.com/1600x900/?nature,Utah'
                     excursionId={excursion._id}
                     excursionName={excursion.name}
                     deleteExcursion={deleteExcursion}
-                  /> */}
+                  />
                 </Box>
               </Grid>
             ))}

@@ -5,6 +5,7 @@ import LandingPage from './views/LandingPage';
 import Register from './views/Register';
 import Inventory from './views/Inventory';
 import Excursions from './views/Excursions';
+import Excursion from './views/Excursion';
 import { UserContext } from './context/UserContext';
 import setAuthToken from './utils/setAuthTokenToHeaders';
 import { userRequests } from './utils/API/userRequests';
@@ -47,6 +48,7 @@ const App = () => {
             <Route exact path='/register' component={Register} />
             <Route exact path='/inventory' component={Inventory} />
             <Route exact path='/excursions' component={Excursions} />
+            <Route exact path='/excursions/:id' component={Excursion} />
           </Switch>
         </UserContext.Provider>
       </Router>
