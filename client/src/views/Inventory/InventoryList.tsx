@@ -93,7 +93,9 @@ const InventoryList: React.FC<InventoryListProps> = (
                   </div>
                 ))
               ) : (
-                <Typography>No items currently stored in Inventory.</Typography>
+                <Typography className='emptyMessage'>
+                  Add items to your inventory!
+                </Typography>
               )}
             </List>
           </div>
@@ -138,7 +140,7 @@ const InventoryList: React.FC<InventoryListProps> = (
                   </div>
                 ))
               ) : (
-                <Typography>No items currently stored in Wishlist.</Typography>
+                <Typography>Add items to your wishlist!</Typography>
               )}
             </List>
           </div>

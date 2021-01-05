@@ -91,7 +91,7 @@ router.delete('/:id', checkToken, async (req: any, res) => {
 
     await user.save();
 
-    await db.Item.findByIdAndDelete(id);
+    await db.Item.findById(id);
 
     res.status(200).json({ user, message: 'Item was removed from inventory.' });
   } catch (error) {

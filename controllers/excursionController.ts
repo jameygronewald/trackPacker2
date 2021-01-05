@@ -2,7 +2,7 @@ import * as express from 'express';
 const router = express.Router();
 import db from '../models';
 import checkToken from '../middleware/checkToken';
-import { InventoryItem } from '../utils/interfaces';
+import { InventoryItem, IExcursion } from '../utils/interfaces';
 
 // ADD AN EXCURSION
 router.post('/', checkToken, async (req: any, res) => {
@@ -24,7 +24,7 @@ router.post('/', checkToken, async (req: any, res) => {
 
     const newExcursion = new db.Excursion({ name });
 
-    const excursion = await newExcursion.save();
+    const excursion: IExcursion = await newExcursion.save();
 
     user.excursions.push(excursion);
     await user.save();
@@ -57,7 +57,7 @@ router.delete('/:id', checkToken, async (req: any, res) => {
     if (!user) throw new Error('Unable to delete excursion.');
 
     const indexToRemove: number = user.excursions
-      .map(excursion => excursion._id)
+      .map((excursion: IExcursion) => excursion._id)
       .indexOf(id);
 
     user.excursions.splice(indexToRemove, 1);
@@ -84,10 +84,10 @@ router.put('/add/:id', checkToken, async (req: any, res) => {
     if (!id) throw new Error('Unable to add item to excursion.');
 
     const excursionToUpdate = await db.Excursion.findById(id).populate('items');
-    const duplicate = excursionToUpdate.items.find(
+
+    const duplicate: InventoryItem | undefined = excursionToUpdate.items.find(
       (excursionItem: InventoryItem) => excursionItem._id == item._id
     );
-
     if (duplicate) throw new Error('Item is already on this excursion.');
 
     excursionToUpdate.items.push(item);
@@ -126,7 +126,7 @@ router.put('/delete/:id', checkToken, async (req: any, res) => {
 
     const excursionToUpdate = await db.Excursion.findById(id).populate('items');
 
-    const indexToRemove = excursionToUpdate.items
+    const indexToRemove: number = excursionToUpdate.items
       .map((excursionItem: InventoryItem) => excursionItem._id)
       .indexOf(item._id);
     if (indexToRemove === -1) throw new Error('Could not find item to delete.');

@@ -9,16 +9,31 @@ import { IExcursion } from '../Excursions/interfaces';
 import { ExcursionQueryParams } from './interfaces';
 import { InventoryItem } from '../Inventory/interfaces';
 
-import { Typography, Grid, Box, Divider, makeStyles } from '@material-ui/core';
+import {
+  Typography,
+  Grid,
+  List,
+  Box,
+  Divider,
+  makeStyles,
+} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   title: {
     /*  flexGrow: 1, */
     fontFamily: 'Montserrat',
     /* textAlign: "center", */
+    margin: theme.spacing(4, 0, 0),
   },
   list: {
     margin: theme.spacing(2, 0, 2),
+  },
+  root: {
+    flexGrow: 1,
+    maxWidth: 752,
+  },
+  demo: {
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 
@@ -92,35 +107,79 @@ const Excursion: React.FC = (): JSX.Element => {
                 {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
-              {currentExcursion &&
-                currentExcursion.items &&
-                currentExcursion.items
-                  .filter((item: InventoryItem) => item.status === 'Inventory')
-                  .map((item: InventoryItem, index: number) => (
-                    <ExcursionInventoryList
-                      key={index}
-                      excursionId={excursionId}
-                      item={item}
-                      deleteItemFromExcursion={deleteItemFromExcursion}
-                    ></ExcursionInventoryList>
-                  ))}
+              <div className={classes.root}>
+                <Grid container spacing={0}>
+                  <Grid item xs={12} sm={6}>
+                    <div className={classes.demo}>
+                      <List>
+                        {currentExcursion &&
+                        currentExcursion.items.length > 0 ? (
+                          currentExcursion.items
+                            .filter(
+                              (item: InventoryItem) =>
+                                item.status === 'Inventory'
+                            )
+                            .map((item: InventoryItem, index: number) => (
+                              <ExcursionInventoryList
+                                key={index}
+                                excursionId={excursionId}
+                                item={item}
+                                deleteItemFromExcursion={
+                                  deleteItemFromExcursion
+                                }
+                              ></ExcursionInventoryList>
+                            ))
+                        ) : (
+                          <Typography className='emptyMessage'>
+                            No items currently in{' '}
+                            {currentExcursion && currentExcursion.name}{' '}
+                            inventory.
+                          </Typography>
+                        )}
+                      </List>
+                    </div>
+                  </Grid>
+                </Grid>
+              </div>
               <Typography className={classes.title} variant='h5'>
                 Wishlist for{' '}
                 {user && currentExcursion !== null && currentExcursion.name}
               </Typography>
               <Divider className={classes.list} variant='middle' />
-              {currentExcursion &&
-                currentExcursion.items &&
-                currentExcursion.items
-                  .filter((item: InventoryItem) => item.status === 'Wishlist')
-                  .map((item: InventoryItem, index: number) => (
-                    <ExcursionInventoryList
-                      key={index}
-                      excursionId={excursionId}
-                      item={item}
-                      deleteItemFromExcursion={deleteItemFromExcursion}
-                    ></ExcursionInventoryList>
-                  ))}
+              <div className={classes.root}>
+                <Grid container spacing={0}>
+                  <Grid item xs={12} sm={6}>
+                    <div className={classes.demo}>
+                      <List>
+                        {currentExcursion &&
+                        currentExcursion.items.length > 0 ? (
+                          currentExcursion.items
+                            .filter(
+                              (item: InventoryItem) =>
+                                item.status === 'Wishlist'
+                            )
+                            .map((item: InventoryItem, index: number) => (
+                              <ExcursionInventoryList
+                                key={index}
+                                excursionId={excursionId}
+                                item={item}
+                                deleteItemFromExcursion={
+                                  deleteItemFromExcursion
+                                }
+                              ></ExcursionInventoryList>
+                            ))
+                        ) : (
+                          <Typography className='emptyMessage'>
+                            No items currently in{' '}
+                            {currentExcursion && currentExcursion.name}{' '}
+                            wishlist.
+                          </Typography>
+                        )}
+                      </List>
+                    </div>
+                  </Grid>
+                </Grid>
+              </div>
             </Grid>
           </Grid>
         </Grid>
