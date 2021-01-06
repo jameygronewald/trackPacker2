@@ -1,6 +1,6 @@
-import * as express from 'express';
+import express from 'express';
 import * as path from 'path';
-import * as cors from 'cors';
+import cors from 'cors';
 import connectDB from './config/db';
 
 const app = express();
@@ -23,7 +23,7 @@ app.use('/api/excursion', require('../controllers/excursionController'));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 
-  app.get('*', (req, res) => {
+  app.get('*', (req: any, res: any) => {
     res.sendFile(path.join(__dirname, './client/build/index.html'));
   });
 }
