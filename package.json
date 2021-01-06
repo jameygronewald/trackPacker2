@@ -2,6 +2,7 @@
   "name": "trackpacker2",
   "version": "1.0.0",
   "description": "Refactor of the TrackPacker app",
+  "type": "module",
   "main": "./server/index.ts",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
@@ -36,8 +37,10 @@
     "if-env": "^1.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.15",
+    "ts-node": "^9.1.1"
+  },
+  "devDependencies": {
     "concurrently": "^5.3.0",
-    "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
 }
