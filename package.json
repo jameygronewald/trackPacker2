@@ -7,13 +7,16 @@
   "scripts": {
     "watch": "nodemon ./server/index.ts",
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:prod": "ts-node ./server/index.ts",
+    "start:prod": "node ./dist/server/index.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
     "seed": "node scripts/seedDB.js",
     "install": "cd client && npm install",
-    "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build"
+    "watch:build:backend": "npm run build:backend -- -w",
+    "build:backend": "tsc -p ./",
+    "build:frontend": "cd client && npm run build",
+    "build:prod": "npm run build:backend && npm run build:frontend",
+    "heroku-postbuild": "npm run build:prod"
   },
   "repository": {
     "type": "git",
@@ -32,8 +35,7 @@
     "express": "^4.17.1",
     "if-env": "^1.0.4",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.15",
-    "ts-node": "^9.1.1"
+    "mongoose": "^5.10.15"
   },
   "devDependencies": {
     "@types/cors": "^2.8.8",
@@ -43,6 +45,7 @@
     "@types/node": "^14.10.1",
     "concurrently": "^5.3.0",
     "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
 }

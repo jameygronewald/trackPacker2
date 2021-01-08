@@ -5,7 +5,7 @@ const validateEmail = (email: string) => {
   return regEx.test(email);
 };
 
-const Schema = mongoose.Schema;
+const Schema: any = mongoose.Schema;
 
 const UserSchema = new Schema({
   email: {

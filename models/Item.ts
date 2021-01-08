@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const Schema: any = mongoose.Schema;
 
 const ItemSchema = new Schema({
   name: {
