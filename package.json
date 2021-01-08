@@ -2,7 +2,6 @@
   "name": "trackpacker2",
   "version": "1.0.0",
   "description": "Refactor of the TrackPacker app",
-  "type": "module",
   "main": "./server/index.ts",
   "scripts": {
     "watch": "nodemon ./server/index.ts",
