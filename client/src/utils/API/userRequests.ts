@@ -9,7 +9,7 @@ export const userRequests = {
     axios.post('/api/user/register', newUser, config),
 
   loginUser: (credentials: LoginCredentials) =>
-    axios.post('/api/auth', credentials, config),
+    axios.post('/api/user', credentials, config),
 
   getUser: () => axios.get('/api/auth'),
 };

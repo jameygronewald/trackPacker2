@@ -1,11 +1,8 @@
-import * as express from 'express';
-const router = express.Router();
 import db from '../models';
-import checkToken from '../middleware/checkToken';
 import { InventoryItem, IExcursion } from '../utils/interfaces';
 
 // ADD AN EXCURSION
-router.post('/', checkToken, async (req: any, res) => {
+export const postExcursion = async (req: any, res) => {
   const { name } = req.body;
   const { id: userId } = req.user;
 
@@ -36,10 +33,10 @@ router.post('/', checkToken, async (req: any, res) => {
       message: 'Server error.',
     });
   }
-});
+};
 
 // DELETE AN EXCURSION
-router.delete('/:id', checkToken, async (req: any, res) => {
+export const deleteExcursion = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
 
@@ -72,10 +69,10 @@ router.delete('/:id', checkToken, async (req: any, res) => {
       message: 'Server error.',
     });
   }
-});
+};
 
 // ADD ITEM TO EXCURSION
-router.put('/add/:id', checkToken, async (req: any, res) => {
+export const putExcursionAddItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
   const item: InventoryItem = req.body;
@@ -113,10 +110,10 @@ router.put('/add/:id', checkToken, async (req: any, res) => {
       message: 'Server error.',
     });
   }
-});
+};
 
 // DELETE AN ITEM FROM AN EXCURSION
-router.put('/delete/:id', checkToken, async (req: any, res) => {
+export const putExcursionDeleteItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
   const item: InventoryItem = req.body;
@@ -154,6 +151,4 @@ router.put('/delete/:id', checkToken, async (req: any, res) => {
       message: 'Server error.',
     });
   }
-});
-
-module.exports = router;
+};

@@ -14,10 +14,10 @@ app.use(express.json());
 app.use(cors());
 
 // Route imports
-app.use('/api/auth', require('../controllers/authController'));
-app.use('/api/user', require('../controllers/userController'));
-app.use('/api/item', require('../controllers/itemController'));
-app.use('/api/excursion', require('../controllers/excursionController'));
+app.use('/api/auth', require('../routes/authRoutes'));
+app.use('/api/user', require('../routes/userRoutes'));
+app.use('/api/item', require('../routes/itemRoutes'));
+app.use('/api/excursion', require('../routes/excursionRoutes'));
 
 // Check for production environment and serve static client build
 if (process.env.NODE_ENV === 'production') {
