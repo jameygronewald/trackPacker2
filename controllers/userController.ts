@@ -1,10 +1,31 @@
-import * as express from 'express';
-const router = express.Router();
 import db from '../models';
 import createToken from '../utils/createToken';
 
+// LOGIN A USER
+export const postUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await db.User.findOne({ email });
+
+    if (password !== user.password) throw new Error('Invalid Password.');
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    const token = createToken(payload);
+    res.status(201).json({ token });
+  } catch (error) {
+    console.error(error.message);
+    res.status(401).json({ msg: 'Invalid credentials.' });
+  }
+};
+
 // REGISTER A NEW USER
-router.post('/register', async (req, res) => {
+export const postNewUser = async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
   try {
@@ -29,6 +50,4 @@ router.post('/register', async (req, res) => {
     console.error(error.message);
     res.status(500).json({ msg: 'Unable to create new user.' });
   }
-});
-
-module.exports = router;
+};

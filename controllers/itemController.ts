@@ -1,11 +1,8 @@
-import * as express from 'express';
-const router = express.Router();
-import checkToken from '../middleware/checkToken';
 import db from '../models';
 import { InventoryItem } from '../utils/interfaces';
 
 // ADD NEW ITEM TO INVENTORY
-router.post('/', checkToken, async (req: any, res) => {
+export const postItem = async (req: any, res) => {
   const { name, status } = req.body;
   const { id: userId } = req.user;
 
@@ -35,10 +32,10 @@ router.post('/', checkToken, async (req: any, res) => {
       message: 'Server error.',
     });
   }
-});
+};
 
 // EDIT ITEM STATUS
-router.put('/:id', checkToken, async (req: any, res) => {
+export const putItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
 
@@ -67,10 +64,10 @@ router.put('/:id', checkToken, async (req: any, res) => {
       message: 'Server error.',
     });
   }
-});
+};
 
 // DELETE AN ITEM
-router.delete('/:id', checkToken, async (req: any, res) => {
+export const deleteItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
 
@@ -108,6 +105,4 @@ router.delete('/:id', checkToken, async (req: any, res) => {
       message: 'Server error.',
     });
   }
-});
-
-module.exports = router;
+};
