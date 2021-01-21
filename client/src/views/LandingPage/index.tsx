@@ -50,12 +50,15 @@ const LandingPage = (props: Props) => {
     e.preventDefault();
     try {
       const response = await userRequests.loginUser(credentials);
+      
       const { token } = response.data;
       localStorage.setItem('token', token);
       setAuthToken(token)
+      
       const userResponse = await userRequests.getUser();
       const { user } = userResponse.data;
       setUserState({ ...userState, user, isAuthenticated: true });
+      
     } catch (error) {
       console.error(error);
     }

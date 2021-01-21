@@ -6,6 +6,8 @@ export const postItem = async (req: any, res) => {
   const { name, status } = req.body;
   const { id: userId } = req.user;
 
+  let output = { status: 500, data: {} };
+
   try {
     if (!name || !status) throw new Error('Unable to create new item.');
 
@@ -25,19 +27,24 @@ export const postItem = async (req: any, res) => {
     user.items.push(item);
     await user.save();
 
-    res.status(200).json(user);
+    output = { status: 200, data: user };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: 'Server error.',
-    });
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Server error.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };
 
 // EDIT ITEM STATUS
 export const putItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
+
+  let output = { status: 500, data: {} };
 
   try {
     const itemToUpdate = await db.Item.findOne({ _id: id });
@@ -57,19 +64,24 @@ export const putItem = async (req: any, res) => {
       });
     if (!user) throw new Error('Unable to update item.');
 
-    res.status(200).json({ user, message: 'Item was updated!' });
+    output = { status: 200, data: { user, message: 'Item was updated!' } };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: 'Server error.',
-    });
+    
+    output = {
+      status: 500,
+      data: { errorMessage: 'Server error.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };
 
 // DELETE AN ITEM
 export const deleteItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
+
+  let output = { status: 500, data: {} };
 
   try {
     const userToUpdate = await db.User.findOne({ _id: userId }).populate(
@@ -98,11 +110,17 @@ export const deleteItem = async (req: any, res) => {
         },
       });
 
-    res.status(200).json({ user, message: 'Item was removed from inventory.' });
+    output = {
+      status: 200,
+      data: { user, message: 'Item was removed from inventory.' },
+    };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: 'Server error.',
-    });
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Server error.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };

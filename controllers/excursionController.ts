@@ -6,6 +6,8 @@ export const postExcursion = async (req: any, res) => {
   const { name } = req.body;
   const { id: userId } = req.user;
 
+  let output = { status: 500, data: {} };
+
   try {
     if (!name) throw new Error('Unable to create new excursion.');
 
@@ -26,19 +28,24 @@ export const postExcursion = async (req: any, res) => {
     user.excursions.push(excursion);
     await user.save();
 
-    res.status(200).json(user);
+    output = { status: 200, data: user };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: 'Server error.',
-    });
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Server error.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };
 
 // DELETE AN EXCURSION
 export const deleteExcursion = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
+
+  let output = { status: 500, data: {} };
 
   try {
     if (!id) throw new Error('Unable to delete excursion.');
@@ -62,13 +69,19 @@ export const deleteExcursion = async (req: any, res) => {
 
     await db.Excursion.findByIdAndDelete(id);
 
-    res.status(200).json({ user, message: 'Successfully deleted excursion.' });
+    output = {
+      status: 200,
+      data: { user, message: 'Successfully deleted excursion.' },
+    };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: 'Server error.',
-    });
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Server error.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };
 
 // ADD ITEM TO EXCURSION
@@ -76,6 +89,8 @@ export const putExcursionAddItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
   const item: InventoryItem = req.body;
+
+  let output = { status: 500, data: {} };
 
   try {
     if (!id) throw new Error('Unable to add item to excursion.');
@@ -101,15 +116,19 @@ export const putExcursionAddItem = async (req: any, res) => {
       });
     if (!user) throw new Error('Unable to add item to excursion.');
 
-    res
-      .status(200)
-      .json({ user, message: 'Successfully added item to excursion.' });
+    output = {
+      status: 200,
+      data: { user, message: 'Successfully added item to excursion.' },
+    };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: 'Server error.',
-    });
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Server error.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };
 
 // DELETE AN ITEM FROM AN EXCURSION
@@ -117,6 +136,8 @@ export const putExcursionDeleteItem = async (req: any, res) => {
   const { id } = req.params;
   const { id: userId } = req.user;
   const item: InventoryItem = req.body;
+
+  let output = { status: 500, data: {} };
 
   try {
     if (!id) throw new Error('Unable to delete item from excursion.');
@@ -142,13 +163,17 @@ export const putExcursionDeleteItem = async (req: any, res) => {
       });
     if (!user) throw new Error('Unable to delete item from excursion.');
 
-    res
-      .status(200)
-      .json({ user, message: 'Successfully deleted item from excursion.' });
+    output = {
+      status: 200,
+      data: { user, message: 'Successfully deleted item from excursion.' },
+    };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: 'Server error.',
-    });
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Server error.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };
