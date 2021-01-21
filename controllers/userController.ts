@@ -5,6 +5,8 @@ import createToken from '../utils/createToken';
 export const postUser = async (req, res) => {
   const { email, password } = req.body;
 
+  let output = { status: 500, data: {} };
+
   try {
     const user = await db.User.findOne({ email });
 
@@ -17,16 +19,24 @@ export const postUser = async (req, res) => {
     };
 
     const token = createToken(payload);
-    res.status(201).json({ token });
+
+    output = { status: 201, data: { token } };
   } catch (error) {
     console.error(error.message);
-    res.status(401).json({ msg: 'Invalid credentials.' });
+
+    output = {
+      status: 401,
+      data: { errorMessage: 'Invalid credentials.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };
 
 // REGISTER A NEW USER
 export const postNewUser = async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
+
+  let output = { status: 500, data: {} };
 
   try {
     let user = await db.User.findOne({ email });
@@ -45,9 +55,15 @@ export const postNewUser = async (req, res) => {
     };
 
     const token = createToken(payload);
-    return res.status(201).json({ token });
+
+    output = { status: 201, data: { token } };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ msg: 'Unable to create new user.' });
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Unable to create new user.' },
+    };
   }
+  res.status(output.status).send(output.data);
 };

@@ -2,6 +2,8 @@ import db from '../models';
 
 // AUTHENTICATE A REQUEST
 export const getUser = async (req: any, res) => {
+  let output = { status: 500, data: {} };
+
   try {
     const userId = req.user.id;
     const user = await db.User.findById(userId)
@@ -13,11 +15,12 @@ export const getUser = async (req: any, res) => {
           path: 'items',
         },
       });
+    output = { status: 201, data: user };
 
-    res.status(201).json({ user });
   } catch (error) {
     console.error(error.message);
-    res.status(401).json({ msg: 'Invalid jwt.' });
+    
+    output = { status: 401, data: { errorMessage: 'Invalid jwt.' } };
   }
+  res.status(output.status).send(output.data);
 };
-

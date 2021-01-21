@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { RegisterCredentials } from './interfaces';
 import { userRequests } from '../../utils/API/userRequests';
 import { UserContext } from '../../context/UserContext';
-import setAuthToken from "../../utils/setAuthTokenToHeaders";
+import setAuthToken from '../../utils/setAuthTokenToHeaders';
 import {
   Container,
   TextField,
@@ -44,9 +44,7 @@ const Register = (props: Props) => {
 
   const { email, password, firstName, lastName } = registerFormData;
 
-  const { setUserState, userState, isAuthenticated } = useContext(
-    UserContext
-  );
+  const { setUserState, userState, isAuthenticated } = useContext(UserContext);
 
   const handleChange = (e: any) => {
     setRegisterFormData({
@@ -58,9 +56,11 @@ const Register = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const response = await userRequests.register(registerFormData);
+
     const { token } = response.data;
     localStorage.setItem('token', token);
-    setAuthToken(token)
+    setAuthToken(token);
+
     const userResponse = await userRequests.getUser();
     const { user } = userResponse.data;
     setUserState({ ...userState, user, isAuthenticated: true });
