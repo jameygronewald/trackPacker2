@@ -2,7 +2,7 @@ import db from '../models';
 import {
   addExcursion,
   removeExcursion,
-  // addItemToExcursion,
+  addItemToExcursion,
   // removeItemFromExcursion,
 } from '../services/excursionService';
 import { InventoryItem, IExcursion } from '../utils/interfaces';
@@ -65,28 +65,29 @@ export const putExcursionAddItem = async (req: any, res) => {
   let output = { status: 500, data: {} };
 
   try {
-    if (!id) throw new Error('Unable to add item to excursion.');
+    // if (!id) throw new Error('Unable to add item to excursion.');
 
-    const excursionToUpdate = await db.Excursion.findById(id).populate('items');
+    // const excursionToUpdate = await db.Excursion.findById(id).populate('items');
 
-    const duplicate: InventoryItem | undefined = excursionToUpdate.items.find(
-      (excursionItem: InventoryItem) => excursionItem._id == item._id
-    );
-    if (duplicate) throw new Error('Item is already on this excursion.');
+    // const duplicate: InventoryItem | undefined = excursionToUpdate.items.find(
+    //   (excursionItem: InventoryItem) => excursionItem._id == item._id
+    // );
+    // if (duplicate) throw new Error('Item is already on this excursion.');
 
-    excursionToUpdate.items.push(item);
+    // excursionToUpdate.items.push(item);
 
-    await excursionToUpdate.save();
+    // await excursionToUpdate.save();
 
-    const user = await db.User.findOne({ _id: userId })
-      .populate('items')
-      .populate({
-        path: 'excursions',
-        populate: {
-          path: 'items',
-        },
-      });
-    if (!user) throw new Error('Unable to add item to excursion.');
+    // const user = await db.User.findOne({ _id: userId })
+    //   .populate('items')
+    //   .populate({
+    //     path: 'excursions',
+    //     populate: {
+    //       path: 'items',
+    //     },
+    //   });
+    // if (!user) throw new Error('Unable to add item to excursion.');
+    const user = await addItemToExcursion(id, userId, item);
 
     output = {
       status: 200,

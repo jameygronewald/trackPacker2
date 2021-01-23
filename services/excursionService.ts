@@ -48,35 +48,34 @@ export const removeExcursion = async (excursionId: string, userId: string) => {
 };
 
 // ADD ITEM TO EXCURSION
-// export const addItemToExcursion = async (excursionId: string) => {
-//   try {
-//     if (!id) throw new Error('Unable to add item to excursion.');
+export const addItemToExcursion = async (
+  excursionId: string,
+  userId: string,
+  item: InventoryItem
+) => {
+  try {
+    if (!excursionId) throw new Error('Unable to add item to excursion.');
 
-//     const excursionToUpdate = await db.Excursion.findById(id).populate('items');
+    const excursionToUpdate = await db.Excursion.findById(excursionId).populate(
+      'items'
+    );
 
-//     const duplicate: InventoryItem | undefined = excursionToUpdate.items.find(
-//       (excursionItem: InventoryItem) => excursionItem._id == item._id
-//     );
-//     if (duplicate) throw new Error('Item is already on this excursion.');
+    const duplicate: InventoryItem | undefined = excursionToUpdate.items.find(
+      (excursionItem: InventoryItem) => excursionItem._id == item._id
+    );
+    if (duplicate) throw new Error('Item is already on this excursion.');
 
-//     excursionToUpdate.items.push(item);
+    excursionToUpdate.items.push(item);
 
-//     await excursionToUpdate.save();
+    await excursionToUpdate.save();
 
-//     const user = await db.User.findOne({ _id: userId })
-//       .populate('items')
-//       .populate({
-//         path: 'excursions',
-//         populate: {
-//           path: 'items',
-//         },
-//       });
-//     if (!user) throw new Error('Unable to add item to excursion.');
-//   } catch (error) {
-//     console.error(error.message);
-//     throw error;
-//   }
-// };
+    const user = await retrieveUser(userId);
+    if (!user) throw new Error('Unable to add item to excursion.');
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+};
 
 // // DELETE AN ITEM FROM AN EXCURSION
 // export const removeItemFromExcursion = async (excursionId: string) => {
