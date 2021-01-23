@@ -3,9 +3,9 @@ import {
   addExcursion,
   removeExcursion,
   addItemToExcursion,
-  // removeItemFromExcursion,
+  removeItemFromExcursion,
 } from '../services/excursionService';
-import { InventoryItem, IExcursion } from '../utils/interfaces';
+import { InventoryItem } from '../utils/interfaces';
 
 // ADD AN EXCURSION
 export const postExcursion = async (req: any, res) => {
@@ -65,28 +65,6 @@ export const putExcursionAddItem = async (req: any, res) => {
   let output = { status: 500, data: {} };
 
   try {
-    // if (!id) throw new Error('Unable to add item to excursion.');
-
-    // const excursionToUpdate = await db.Excursion.findById(id).populate('items');
-
-    // const duplicate: InventoryItem | undefined = excursionToUpdate.items.find(
-    //   (excursionItem: InventoryItem) => excursionItem._id == item._id
-    // );
-    // if (duplicate) throw new Error('Item is already on this excursion.');
-
-    // excursionToUpdate.items.push(item);
-
-    // await excursionToUpdate.save();
-
-    // const user = await db.User.findOne({ _id: userId })
-    //   .populate('items')
-    //   .populate({
-    //     path: 'excursions',
-    //     populate: {
-    //       path: 'items',
-    //     },
-    //   });
-    // if (!user) throw new Error('Unable to add item to excursion.');
     const user = await addItemToExcursion(id, userId, item);
 
     output = {
@@ -113,28 +91,7 @@ export const putExcursionDeleteItem = async (req: any, res) => {
   let output = { status: 500, data: {} };
 
   try {
-    if (!id) throw new Error('Unable to delete item from excursion.');
-
-    const excursionToUpdate = await db.Excursion.findById(id).populate('items');
-
-    const indexToRemove: number = excursionToUpdate.items
-      .map((excursionItem: InventoryItem) => excursionItem._id)
-      .indexOf(item._id);
-    if (indexToRemove === -1) throw new Error('Could not find item to delete.');
-
-    excursionToUpdate.items.splice(indexToRemove, 1);
-
-    await excursionToUpdate.save();
-
-    const user = await db.User.findOne({ _id: userId })
-      .populate('items')
-      .populate({
-        path: 'excursions',
-        populate: {
-          path: 'items',
-        },
-      });
-    if (!user) throw new Error('Unable to delete item from excursion.');
+    const user = await removeItemFromExcursion(id, userId, item);
 
     output = {
       status: 200,
