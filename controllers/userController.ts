@@ -1,5 +1,4 @@
-import db from '../models';
-import createToken from '../utils/createToken';
+import { loginUser, registerUser } from '../services/userService';
 
 // LOGIN A USER
 export const postUser = async (req, res) => {
@@ -8,17 +7,18 @@ export const postUser = async (req, res) => {
   let output = { status: 500, data: {} };
 
   try {
-    const user = await db.User.findOne({ email });
+    // const user = await db.User.findOne({ email });
 
-    if (password !== user.password) throw new Error('Invalid Password.');
+    // if (password !== user.password) throw new Error('Invalid Password.');
 
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
+    // const payload = {
+    //   user: {
+    //     id: user.id,
+    //   },
+    // };
 
-    const token = createToken(payload);
+    // const token = createToken(payload);
+    const token = await loginUser(email, password);
 
     output = { status: 201, data: { token } };
   } catch (error) {
@@ -39,22 +39,7 @@ export const postNewUser = async (req, res) => {
   let output = { status: 500, data: {} };
 
   try {
-    let user = await db.User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists.' });
-    }
-
-    user = new db.User({ email, password, firstName, lastName });
-
-    await user.save();
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    const token = createToken(payload);
+    const token = await registerUser(email, password, firstName, lastName);
 
     output = { status: 201, data: { token } };
   } catch (error) {
