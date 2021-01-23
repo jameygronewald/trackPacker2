@@ -1,5 +1,6 @@
 import db from '../models';
 import createToken from '../utils/createToken';
+import { Payload } from '../utils/interfaces';
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -7,7 +8,7 @@ export const loginUser = async (email: string, password: string) => {
 
     if (password !== user.password) throw new Error('Invalid Password.');
 
-    const payload = {
+    const payload: Payload = {
       user: {
         id: user.id,
       },
@@ -37,7 +38,7 @@ export const registerUser = async (
 
     await user.save();
 
-    const payload = {
+    const payload: Payload = {
       user: {
         id: user.id,
       },
