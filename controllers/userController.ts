@@ -7,17 +7,6 @@ export const postUser = async (req, res) => {
   let output = { status: 500, data: {} };
 
   try {
-    // const user = await db.User.findOne({ email });
-
-    // if (password !== user.password) throw new Error('Invalid Password.');
-
-    // const payload = {
-    //   user: {
-    //     id: user.id,
-    //   },
-    // };
-
-    // const token = createToken(payload);
     const token = await loginUser(email, password);
 
     output = { status: 201, data: { token } };
