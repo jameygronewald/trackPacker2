@@ -1,4 +1,10 @@
 import db from '../models';
+import {
+  addExcursion,
+  removeExcursion,
+  // addItemToExcursion,
+  // removeItemFromExcursion,
+} from '../services/excursionService';
 import { InventoryItem, IExcursion } from '../utils/interfaces';
 
 // ADD AN EXCURSION
@@ -9,24 +15,7 @@ export const postExcursion = async (req: any, res) => {
   let output = { status: 500, data: {} };
 
   try {
-    if (!name) throw new Error('Unable to create new excursion.');
-
-    const user = await db.User.findOne({ _id: userId })
-      .populate('items')
-      .populate({
-        path: 'excursions',
-        populate: {
-          path: 'items',
-        },
-      });
-    if (!user) throw new Error('Unable to create new excursion.');
-
-    const newExcursion = new db.Excursion({ name });
-
-    const excursion: IExcursion = await newExcursion.save();
-
-    user.excursions.push(excursion);
-    await user.save();
+    const user = await addExcursion(name, userId);
 
     output = { status: 200, data: user };
   } catch (error) {
@@ -50,24 +39,7 @@ export const deleteExcursion = async (req: any, res) => {
   try {
     if (!id) throw new Error('Unable to delete excursion.');
 
-    const user = await db.User.findOne({ _id: userId })
-      .populate('items')
-      .populate({
-        path: 'excursions',
-        populate: {
-          path: 'items',
-        },
-      });
-    if (!user) throw new Error('Unable to delete excursion.');
-
-    const indexToRemove: number = user.excursions
-      .map((excursion: IExcursion) => excursion._id)
-      .indexOf(id);
-
-    user.excursions.splice(indexToRemove, 1);
-    await user.save();
-
-    await db.Excursion.findByIdAndDelete(id);
+    const user = await removeExcursion(id, userId);
 
     output = {
       status: 200,
