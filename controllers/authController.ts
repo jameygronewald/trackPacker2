@@ -1,4 +1,4 @@
-import { findUser } from '../services/authService';
+import { retrieveUser } from '../services/authService';
 
 // AUTHENTICATE A REQUEST
 export const getUser = async (req: any, res) => {
@@ -7,7 +7,7 @@ export const getUser = async (req: any, res) => {
 
   try {
     if (!userId) throw new Error('Invalid jwt.');
-    const user = await findUser(userId);
+    const user = await retrieveUser(userId);
 
     output = { status: 201, data: user };
   } catch (error) {
