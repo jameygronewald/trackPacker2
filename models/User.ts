@@ -1,9 +1,5 @@
 import * as mongoose from 'mongoose';
-
-const validateEmail = (email: string) => {
-  const regEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return regEx.test(email);
-};
+import validateEmail from '../utils/validateEmail';
 
 const Schema: any = mongoose.Schema;
 
