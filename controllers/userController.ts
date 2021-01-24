@@ -1,34 +1,43 @@
-import * as express from 'express';
-const router = express.Router();
-import db from '../models';
-import createToken from '../utils/createToken';
+import { loginUser, registerUser } from '../services/userService';
 
-// REGISTER A NEW USER
-router.post('/register', async (req, res) => {
-  const { email, password, firstName, lastName } = req.body;
+// LOGIN A USER
+export const postUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  let output = { status: 500, data: {} };
 
   try {
-    let user = await db.User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists.' });
-    }
+    const token = await loginUser(email, password);
 
-    user = new db.User({ email, password, firstName, lastName });
-
-    await user.save();
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    const token = createToken(payload);
-    return res.status(201).json({ token });
+    output = { status: 201, data: { token } };
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ msg: 'Unable to create new user.' });
-  }
-});
 
-module.exports = router;
+    output = {
+      status: 401,
+      data: { errorMessage: 'Invalid credentials.' },
+    };
+  }
+  res.status(output.status).send(output.data);
+};
+
+// REGISTER A NEW USER
+export const postNewUser = async (req, res) => {
+  const { email, password, firstName, lastName } = req.body;
+
+  let output = { status: 500, data: {} };
+
+  try {
+    const token = await registerUser(email, password, firstName, lastName);
+
+    output = { status: 201, data: { token } };
+  } catch (error) {
+    console.error(error.message);
+
+    output = {
+      status: 500,
+      data: { errorMessage: 'Unable to create new user.' },
+    };
+  }
+  res.status(output.status).send(output.data);
+};
